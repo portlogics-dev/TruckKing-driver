@@ -20,6 +20,9 @@ importers:
       '@rnx-kit/metro-resolver-symlinks':
         specifier: 0.2.1
         version: 0.2.1
+      jsc-android:
+        specifier: ^250231.0.0
+        version: 250231.0.0
       react:
         specifier: 18.2.0
         version: 18.2.0
