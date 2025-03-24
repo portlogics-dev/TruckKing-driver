@@ -12,7 +12,9 @@
   "dependencies": {
     "@react-native-community/cli-platform-android": "^9.0.0",
     "@react-native-community/cli-platform-ios": "^9.0.0",
+    "@react-navigation/bottom-tabs": "^6.x",
     "@react-navigation/native": "^6.x",
+    "@react-navigation/native-stack": "^6.x",
     "@rnx-kit/metro-config": "2.0.1",
     "@rnx-kit/metro-resolver-symlinks": "0.2.1",
     "@tanstack/react-query": "^5.69.0",
@@ -20,6 +22,7 @@
     "jsc-android": "^250231.0.0",
     "react": "18.2.0",
     "react-native": "0.71.19",
+    "react-native-gesture-handler": "^2.24.0",
     "react-native-gradle-plugin": "0.71.19",
     "react-native-mmkv": "^3.2.0",
     "react-native-safe-area-context": "^5.3.0",
