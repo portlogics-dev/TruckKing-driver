@@ -23,7 +23,7 @@ const api = ky.create({
     beforeRequest: [
       async (request) => {
         const cookieString = CookieStorage.toString();
-        cookieString && request.headers.set("Cookie", cookieString);
+        if (cookieString) request.headers.set("Cookie", cookieString);
       },
     ],
     afterResponse: [
@@ -31,7 +31,7 @@ const api = ky.create({
       async (_req, _opts, response) => {
         if (response.ok) {
           const combinedCookiesHeader = response.headers.get("set-cookie");
-          combinedCookiesHeader &&
+          if (combinedCookiesHeader)
             CookieStorage.parseAndSet(combinedCookiesHeader);
           return;
         }
@@ -170,14 +170,14 @@ export const useUpdateDriverInfo = () => {
 };
 
 // order queries
-const OrderStatus = {
-  READY: "READY",
-  TO_LOADING: "TO_LOADING",
-  TO_UNLOADING: "TO_UNLOADING",
-  COMPLETED: "COMPLETED",
-  PENDING: "PENDING",
-  CANCELED: "CANCELED",
-} as const;
+enum OrderStatus {
+  READY = "READY",
+  TO_LOADING = "TO_LOADING",
+  TO_UNLOADING = "TO_UNLOADING",
+  COMPLETED = "COMPLETED",
+  PENDING = "PENDING",
+  CANCELED = "CANCELED",
+}
 
 const getOrderDetail = async ({ orderId }: { orderId: number }) =>
   await api.get(`/order/${orderId}`).json<{
@@ -233,7 +233,7 @@ const updateOrderStatus = async ({
 }: {
   orderId: number;
   body: {
-    status: typeof OrderStatus;
+    status: OrderStatus;
     image: string;
     address: string | null;
     latitude: string | null;
@@ -310,7 +310,7 @@ export const useUpdateOrderStatus = () => {
     }: {
       orderId: number;
       body: {
-        status: typeof OrderStatus;
+        status: OrderStatus;
         image: string;
         address: string | null;
         latitude: string | null;

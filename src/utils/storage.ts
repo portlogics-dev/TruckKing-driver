@@ -1,5 +1,5 @@
 import { MMKV } from "react-native-mmkv";
-import setCookie from "set-cookie-parser";
+import * as setCookie from "set-cookie-parser";
 
 // MMKV 인스턴스 생성
 export const storage = new MMKV({
@@ -154,7 +154,7 @@ class CookieStorage {
 
   static parseAndSet(combinedCookiesHeader: string): void {
     const splitCookieHeaders = setCookie.splitCookiesString(
-      combinedCookiesHeader
+      combinedCookiesHeader,
     );
     const cookies = setCookie.parse(splitCookieHeaders);
     cookies.forEach((cookie) => this.set(cookie));

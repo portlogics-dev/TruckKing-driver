@@ -76,6 +76,14 @@ module.exports = {
     ".*.js",
     "node_modules/",
   ],
+  overrides: [
+    { files: ["*.js?(x)", "*.ts?(x)"] },
+    {
+      // Test files only
+      files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      extends: ["plugin:testing-library/react"],
+    },
+  ],
   parserOptions: {
     requireConfigFile: false,
     babelOptions: {
