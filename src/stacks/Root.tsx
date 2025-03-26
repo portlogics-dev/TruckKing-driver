@@ -1,8 +1,9 @@
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../type';
-import Home from '../screens/Home';
-import OrderHistory from '../screens/OrderHistory';
-import Settings from '../screens/Settings';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import Home from "../screens/Home";
+import OrderHistory from "../screens/OrderHistory";
+import Settings from "../screens/Settings";
+import { RootStackParamList } from "../type";
 
 const Root = createNativeStackNavigator<RootStackParamList>();
 

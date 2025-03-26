@@ -68,6 +68,8 @@ module.exports = {
         ignoreRestSiblings: true,
       },
     ],
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off",
   },
   ignorePatterns: [
     // Ignore dotfiles

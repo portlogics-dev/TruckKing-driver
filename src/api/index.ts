@@ -1,10 +1,11 @@
-import ky from 'ky';
-import {CookieStorage} from '../utils/storage';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import dayjs, { extend } from "dayjs";
+import utc from "dayjs/plugin/utc";
+import ky from "ky";
 
-dayjs.extend(utc);
+import { CookieStorage } from "../utils/storage";
+
+extend(utc);
 
 const localizedDayjs = (utcString: string) => dayjs(utcString).local();
 
@@ -17,19 +18,19 @@ type ErrorResponse = {
 };
 
 const api = ky.create({
-  prefixUrl: 'https://api.example.com', // todo: get env base URL
+  prefixUrl: "https://api.example.com", // todo: get env base URL
   hooks: {
     beforeRequest: [
-      async request => {
+      async (request) => {
         const cookieString = CookieStorage.toString();
-        cookieString && request.headers.set('Cookie', cookieString);
+        cookieString && request.headers.set("Cookie", cookieString);
       },
     ],
     afterResponse: [
       // AT 만료될 때 RT도 서버 자동 갱신 -> 매 응답마다 쿠키 최신화
       async (_req, _opts, response) => {
         if (response.ok) {
-          const combinedCookiesHeader = response.headers.get('set-cookie');
+          const combinedCookiesHeader = response.headers.get("set-cookie");
           combinedCookiesHeader &&
             CookieStorage.parseAndSet(combinedCookiesHeader);
           return;
@@ -41,25 +42,25 @@ const api = ky.create({
           case 401:
             CookieStorage.clearAll();
             // todo: 로그인 스크린으로 리다이렉트 - useNavigator 필요
-            throw new Error('Unauthorized access. Please login again.');
+            throw new Error("Unauthorized access. Please login again.");
           case 403:
-            throw new Error('Forbidden');
+            throw new Error("Forbidden");
           case 404:
-            throw new Error('Not Found');
+            throw new Error("Not Found");
           case 500:
-            throw new Error('Internal Server Error');
+            throw new Error("Internal Server Error");
           default:
             break;
         }
-        throw new Error(errorData.message || 'Unknown error');
+        throw new Error(errorData.message || "Unknown error");
       },
     ],
   },
 });
 
 // authentication
-const updatePincode = async ({pincode}: {pincode: string}) =>
-  await api.put('/driver/pincode', {json: {pincode}});
+const updatePincode = async ({ pincode }: { pincode: string }) =>
+  await api.put("/driver/pincode", { json: { pincode } });
 
 export const useLogin = ({
   vehicleNumber,
@@ -70,7 +71,7 @@ export const useLogin = ({
 }) =>
   useMutation({
     mutationFn: async () =>
-      await api.post('/driver/login', {
+      await api.post("/driver/login", {
         json: {
           vehicleNumber,
           pincode,
@@ -80,35 +81,36 @@ export const useLogin = ({
 
 export const useLogout = () =>
   useMutation({
-    mutationFn: async () => await api.post('/driver/logout'),
-    onSuccess: res => {
+    mutationFn: async () => await api.post("/driver/logout"),
+    onSuccess: (res) => {
       if (res.ok) {
-        CookieStorage.delete('Authentication');
-        CookieStorage.delete('Refresh-Token');
+        CookieStorage.delete("Authentication");
+        CookieStorage.delete("Refresh-Token");
         CookieStorage.cleanExpired();
       }
     },
   });
 
-export const useUpdatePincode = ({pincode}: {pincode: string}) =>
+export const useUpdatePincode = ({ pincode }: { pincode: string }) =>
   useMutation({
-    mutationFn: () => updatePincode({pincode}),
+    mutationFn: () => updatePincode({ pincode }),
   });
 
-export const useDeleteAccount = useMutation({
-  mutationFn: async () => await api.delete('/driver'),
-  onSuccess: res => {
-    if (res.ok) {
-      CookieStorage.delete('Authentication');
-      CookieStorage.delete('Refresh-Token');
-      CookieStorage.cleanExpired();
-    }
-  },
-});
+export const useDeleteAccount = () =>
+  useMutation({
+    mutationFn: async () => await api.delete("/driver"),
+    onSuccess: (res) => {
+      if (res.ok) {
+        CookieStorage.delete("Authentication");
+        CookieStorage.delete("Refresh-Token");
+        CookieStorage.cleanExpired();
+      }
+    },
+  });
 
 // driver queries
 const getDriverInfo = async () =>
-  await api.get('/driver').json<{
+  await api.get("/driver").json<{
     id: number;
     name: string;
     phoneNumber: string;
@@ -128,16 +130,16 @@ const updateDriverInfo = async ({
     vehicleNumber: string;
     vehicleType: string;
   };
-}) => await api.put(`/driver/${driverId}`, {json: body});
+}) => await api.put(`/driver/${driverId}`, { json: body });
 
 const driverKeys = {
-  all: ['driver'] as const,
-  info: () => [...driverKeys.all, 'info'] as const,
+  all: ["driver"] as const,
+  info: () => [...driverKeys.all, "info"] as const,
 };
 
 export const useDriverInfo = () =>
   useQuery({
-    queryKey: ['driver'],
+    queryKey: ["driver"],
     queryFn: getDriverInfo,
   });
 
@@ -162,22 +164,22 @@ export const useUpdateDriverInfo = () => {
         body,
       }),
     onSuccess: () => {
-      queryClient.invalidateQueries({queryKey: driverKeys.info()});
+      queryClient.invalidateQueries({ queryKey: driverKeys.info() });
     },
   });
 };
 
 // order queries
 const OrderStatus = {
-  READY: 'READY',
-  TO_LOADING: 'TO_LOADING',
-  TO_UNLOADING: 'TO_UNLOADING',
-  COMPLETED: 'COMPLETED',
-  PENDING: 'PENDING',
-  CANCELED: 'CANCELED',
+  READY: "READY",
+  TO_LOADING: "TO_LOADING",
+  TO_UNLOADING: "TO_UNLOADING",
+  COMPLETED: "COMPLETED",
+  PENDING: "PENDING",
+  CANCELED: "CANCELED",
 } as const;
 
-const getOrderDetail = async ({orderId}: {orderId: number}) =>
+const getOrderDetail = async ({ orderId }: { orderId: number }) =>
   await api.get(`/order/${orderId}`).json<{
     id: number;
     companyId: number;
@@ -204,7 +206,7 @@ const getOrderDetail = async ({orderId}: {orderId: number}) =>
   }>();
 
 const getOrderHistory = async () =>
-  await api.get('/order').json<{
+  await api.get("/order").json<{
     content: {
       id: number;
       companyId: number;
@@ -217,7 +219,7 @@ const getOrderHistory = async () =>
       createdAt: string; // "2023-07-15T09:00:00Z"
     }[];
     totalElements: number;
-    totalPages: Number;
+    totalPages: number;
     size: number;
     number: number;
     first: boolean;
@@ -239,7 +241,7 @@ const updateOrderStatus = async ({
     updateTime: string | null; // UTC
   };
 }) =>
-  await api.put(`/order/${orderId}`, {json: body}).json<{
+  await api.put(`/order/${orderId}`, { json: body }).json<{
     id: number;
     companyId: number;
     companyName: string;
@@ -265,18 +267,18 @@ const updateOrderStatus = async ({
   }>();
 
 const orderKeys = {
-  all: ['order'] as const,
-  list: () => [...orderKeys.all, 'list'] as const,
-  details: () => [...orderKeys.all, 'detail'] as const,
-  detail: (orderId: number) => [...orderKeys.all, 'detail', orderId] as const,
+  all: ["order"] as const,
+  list: () => [...orderKeys.all, "list"] as const,
+  details: () => [...orderKeys.all, "detail"] as const,
+  detail: (orderId: number) => [...orderKeys.all, "detail", orderId] as const,
 };
 
-export const useOrderDetail = ({orderId}: {orderId: number}) =>
+export const useOrderDetail = ({ orderId }: { orderId: number }) =>
   useQuery({
     queryKey: orderKeys.detail(orderId),
-    queryFn: () => getOrderDetail({orderId}),
+    queryFn: () => getOrderDetail({ orderId }),
     enabled: !!orderId,
-    select: data => ({
+    select: (data) => ({
       ...data,
       loadingExpectTime: localizedDayjs(data.loadingExpectTime),
       unloadingExpectTime: localizedDayjs(data.unloadingExpectTime),
@@ -289,9 +291,9 @@ export const useOrderList = () =>
   useQuery({
     queryKey: orderKeys.list(),
     queryFn: getOrderHistory,
-    select: data => ({
+    select: (data) => ({
       ...data,
-      content: data.content.map(order => ({
+      content: data.content.map((order) => ({
         ...order,
         createdAt: localizedDayjs(order.createdAt),
       })),
