@@ -2,13 +2,15 @@
  * @format
  */
 
-import 'react-native';
-import React from 'react';
-import App from '../App';
+import { render } from "@testing-library/react-native";
+import React from "react";
 
-// Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+import App from "../App";
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+describe("App", () => {
+  it("renders correctly", () => {
+    render(<App />);
+    // 필요한 경우 특정 요소를 찾아서 테스트
+    // expect(getByTestId('some-test-id')).toBeTruthy();
+  });
 });

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+PROTECTED_BRANCHES="^(main)"
+
+if [[ "$BRANCH" =~ $PROTECTED_BRANCHES ]] 
+then
+    echo "🚫 push to main is prevented"
+    exit 1
+fi
+
+# echo "🌐 Running translation check..."
+# pnpm check-translations
+
+# echo "🔍 Cleaning Next.js build..."
+# pnpm -r clean:nextjs
+
+echo "🔍 Running type check..."
+pnpm -r typecheck
+
+if [ $? -ne 0 ]; then
+    echo "Type check failed, push prevented"
+    exit 1
+fi
+
+echo "✅ Build successful, proceeding with push"

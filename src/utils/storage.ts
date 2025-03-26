@@ -1,19 +1,19 @@
-import {MMKV} from 'react-native-mmkv';
-import setCookie from 'set-cookie-parser';
+import { MMKV } from "react-native-mmkv";
+import * as setCookie from "set-cookie-parser";
 
 // MMKV 인스턴스 생성
 export const storage = new MMKV({
-  id: 'app-storage',
-  encryptionKey: 'encryption-key-here',
+  id: "app-storage",
+  encryptionKey: "encryption-key-here",
 });
 
 // 타입 정의
 type StorageKey =
-  | 'user-token'
-  | 'user-info'
-  | 'app-settings'
-  | 'session-data'
-  | 'cookies';
+  | "user-token"
+  | "user-info"
+  | "app-settings"
+  | "session-data"
+  | "cookies";
 
 // 저장소 유틸리티 클래스
 class mmkvStorage {
@@ -107,7 +107,7 @@ type Cookies = Record<string, Cookie>;
  * });
  */
 class CookieStorage {
-  private static COOKIE_KEY: StorageKey = 'cookies';
+  private static COOKIE_KEY: StorageKey = "cookies";
 
   // 쿠키 저장
   static set(cookie: Cookie): void {
@@ -157,16 +157,16 @@ class CookieStorage {
       combinedCookiesHeader,
     );
     const cookies = setCookie.parse(splitCookieHeaders);
-    cookies.forEach(cookie => this.set(cookie));
+    cookies.forEach((cookie) => this.set(cookie));
   }
 
   // 쿠키 문자열로 변환 (네트워크 요청용)
   static toString(): string {
     const cookies = this.getAll();
     return Object.values(cookies)
-      .map(cookie => `${cookie.name}=${cookie.value}`)
-      .join('; ');
+      .map((cookie) => `${cookie.name}=${cookie.value}`)
+      .join("; ");
   }
 }
 
-export {mmkvStorage as Storage, CookieStorage, type Cookie};
+export { mmkvStorage as Storage, CookieStorage, type Cookie };

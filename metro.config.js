@@ -1,7 +1,7 @@
-const {makeMetroConfig} = require('@rnx-kit/metro-config');
-const MetroSymlinksResolver = require('@rnx-kit/metro-resolver-symlinks');
+import { makeMetroConfig } from "@rnx-kit/metro-config";
+import MetroSymlinksResolver from "@rnx-kit/metro-resolver-symlinks";
 
-module.exports = makeMetroConfig({
+export default makeMetroConfig({
   projectRoot: __dirname,
   resolver: {
     resolveRequest: MetroSymlinksResolver(),

@@ -1,22 +1,21 @@
-import * as React from 'react';
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import {
   View,
   useColorScheme,
   StatusBar,
   ScrollView,
-  StyleSheet,
   Button,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Section from '../components/Section';
-import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
-import {RootStackParamList} from '../type';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+} from "react-native";
+import { Colors, Header } from "react-native/Libraries/NewAppScreen";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-type HomeProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+import Section from "../components/Section";
+import { RootStackParamList } from "../type";
 
-export default function Home({navigation}: HomeProps) {
-  const isDarkMode = useColorScheme() === 'dark';
+type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
+
+export default function Home({ navigation }: HomeProps) {
+  const isDarkMode = useColorScheme() === "dark";
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -25,21 +24,23 @@ export default function Home({navigation}: HomeProps) {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        style={backgroundStyle}
+      >
         <Header />
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+          }}
+        >
           <Section title="Home Screen">
             <Button
               title="Go to Details"
-              onPress={() => navigation.navigate('OrderHistory')}
+              onPress={() => navigation.navigate("OrderHistory")}
             />
           </Section>
         </View>
