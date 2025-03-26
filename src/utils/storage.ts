@@ -1,4 +1,5 @@
 import {MMKV} from 'react-native-mmkv';
+import setCookie from 'set-cookie-parser';
 
 // MMKV 인스턴스 생성
 export const storage = new MMKV({
@@ -15,7 +16,7 @@ type StorageKey =
   | 'cookies';
 
 // 저장소 유틸리티 클래스
-class Storage {
+class mmkvStorage {
   // 문자열 데이터 저장
   static setString(key: StorageKey, value: string): void {
     storage.set(key, value);
@@ -84,13 +85,9 @@ class Storage {
 }
 
 // 쿠키 관리를 위한 인터페이스
-interface Cookie {
-  name: string;
-  value: string;
-  domain?: string;
-  path?: string;
-  expires?: Date;
-}
+type Cookie = setCookie.Cookie;
+
+type Cookies = Record<string, Cookie>;
 
 /**
  *  쿠키 관리 유틸리티
@@ -116,7 +113,7 @@ class CookieStorage {
   static set(cookie: Cookie): void {
     const cookies = this.getAll();
     cookies[cookie.name] = cookie;
-    Storage.setObject(this.COOKIE_KEY, cookies);
+    mmkvStorage.setObject(this.COOKIE_KEY, cookies);
   }
 
   // 쿠키 조회
@@ -126,15 +123,15 @@ class CookieStorage {
   }
 
   // 모든 쿠키 조회
-  static getAll(): Record<string, Cookie> {
-    return Storage.getObject<Record<string, Cookie>>(this.COOKIE_KEY) || {};
+  static getAll(): Cookies {
+    return mmkvStorage.getObject<Cookies>(this.COOKIE_KEY) || {};
   }
 
   // 쿠키 삭제
   static delete(name: string): void {
     const cookies = this.getAll();
     delete cookies[name];
-    Storage.setObject(this.COOKIE_KEY, cookies);
+    mmkvStorage.setObject(this.COOKIE_KEY, cookies);
   }
 
   // 만료된 쿠키 정리
@@ -148,7 +145,19 @@ class CookieStorage {
       }
     });
 
-    Storage.setObject(this.COOKIE_KEY, cookies);
+    mmkvStorage.setObject(this.COOKIE_KEY, cookies);
+  }
+
+  static clearAll(): void {
+    mmkvStorage.delete(this.COOKIE_KEY);
+  }
+
+  static parseAndSet(combinedCookiesHeader: string): void {
+    const splitCookieHeaders = setCookie.splitCookiesString(
+      combinedCookiesHeader,
+    );
+    const cookies = setCookie.parse(splitCookieHeaders);
+    cookies.forEach(cookie => this.set(cookie));
   }
 
   // 쿠키 문자열로 변환 (네트워크 요청용)
@@ -160,4 +169,4 @@ class CookieStorage {
   }
 }
 
-export {Storage, CookieStorage, type Cookie};
+export {mmkvStorage as Storage, CookieStorage, type Cookie};

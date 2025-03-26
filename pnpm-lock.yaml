@@ -38,6 +38,9 @@ importers:
       jsc-android:
         specifier: ^250231.0.0
         version: 250231.0.0
+      ky:
+        specifier: ^1.7.5
+        version: 1.7.5
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -108,6 +111,9 @@ importers:
       '@types/react-test-renderer':
         specifier: ^18.0.0
         version: 18.3.1
+      '@types/set-cookie-parser':
+        specifier: ^2.4.10
+        version: 2.4.10
       babel-jest:
         specifier: ^29.2.1
         version: 29.7.0(@babel/core@7.26.10)
@@ -129,6 +135,9 @@ importers:
       react-test-renderer:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
+      set-cookie-parser:
+        specifier: ^2.7.1
+        version: 2.7.1
       typescript:
         specifier: 4.9.5
         version: 4.9.5
@@ -1261,6 +1270,9 @@ packages:
 
   '@types/semver@7.5.8':
     resolution: {integrity: sha512-I8EUhyrgfLrcTkzV3TSsGyl1tSuPrEDzr0yd5m90UgNxQkyDXULk3b6MlQqTCpZpNtWe1K0hzclnZkTcLBe2UQ==}
+
+  '@types/set-cookie-parser@2.4.10':
+    resolution: {integrity: sha512-GGmQVGpQWUe5qglJozEjZV/5dyxbOOZ0LHe/lqyWssB88Y4svNfst0uqBVscdDeIKl5Jy5+aPSvy7mI9tYRguw==}
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
@@ -2764,6 +2776,10 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
 
+  ky@1.7.5:
+    resolution: {integrity: sha512-HzhziW6sc5m0pwi5M196+7cEBtbt0lCYi67wNsiwMUmz833wloE0gbzJPWKs1gliFKQb34huItDQX97LyOdPdA==}
+    engines: {node: '>=18'}
+
   launch-editor@2.10.0:
     resolution: {integrity: sha512-D7dBRJo/qcGX9xlvt/6wUYzQxjh5G1RvZPgPv8vi4KRU99DVQL/oW7tnVOCCTm2HGeo3C5HvGE5Yrh6UBoZ0vA==}
 
@@ -3494,6 +3510,9 @@ packages:
 
   set-blocking@2.0.0:
     resolution: {integrity: sha512-KiKBS8AnWGEyLzofFfmvKwpdPzqiy16LvQfK3yv/fVH7Bj13/wl3JSR1J+rfgRE9q7xUJK4qvgS8raSOeLUehw==}
+
+  set-cookie-parser@2.7.1:
+    resolution: {integrity: sha512-IOc8uWeOZgnb3ptbCURJWNjWUPcO3ZnTTdzsurqERrP6nPyv+paC55vJM0LpOlT2ne+Ix+9+CRG1MNLlyZ4GjQ==}
 
   set-function-length@1.2.2:
     resolution: {integrity: sha512-pgRc4hJ4/sNjWCSS9AmnS40x3bNMDTknHgL5UaMBTMyJnU90EgWh1Rz+MC9eFu4BuN/UwZjKQuY/1v3rM7HMfg==}
@@ -5704,6 +5723,10 @@ snapshots:
 
   '@types/semver@7.5.8': {}
 
+  '@types/set-cookie-parser@2.4.10':
+    dependencies:
+      '@types/node': 22.13.10
+
   '@types/stack-utils@2.0.3': {}
 
   '@types/yargs-parser@21.0.3': {}
@@ -7632,6 +7655,8 @@ snapshots:
 
   kleur@3.0.3: {}
 
+  ky@1.7.5: {}
+
   launch-editor@2.10.0:
     dependencies:
       picocolors: 1.1.1
@@ -8583,6 +8608,8 @@ snapshots:
       - supports-color
 
   set-blocking@2.0.0: {}
+
+  set-cookie-parser@2.7.1: {}
 
   set-function-length@1.2.2:
     dependencies:
