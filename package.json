@@ -31,6 +31,7 @@
     "@rnx-kit/metro-config": "2.0.1",
     "@rnx-kit/metro-resolver-symlinks": "0.2.1",
     "@tanstack/react-query": "^5.69.0",
+    "chalk": "^5.4.1",
     "dayjs": "^1.11.13",
     "jsc-android": "^250231.0.0",
     "ky": "^1.7.5",
