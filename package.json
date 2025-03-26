@@ -5,8 +5,7 @@
   "scripts": {
     "android": "pnpm react-native run-android",
     "ios": "pnpm react-native run-ios",
-    "lint": "eslint .",
-    "format": "prettier --write .",
+    "lint": "eslint --max-warnings 0 .",
     "start": "pnpm react-native start",
     "test": "pnpm jest",
     "branch:clean": "git remote prune origin && sh ./scripts/cleanup-branches.sh",
@@ -77,6 +76,7 @@
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-prettier": "^5.2.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-testing-library": "^7.1.1",
     "gensync": "1.0.0-beta.2",
     "husky": "^9.1.7",

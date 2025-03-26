@@ -11,7 +11,7 @@ function getTranslationKeys(filePath: string): string[] {
   } catch (error) {
     console.log(
       chalk.red(`❌ 번역 파일을 읽을 수 없습니다: ${filePath}`),
-      error,
+      error
     );
     return [];
   }
@@ -19,7 +19,7 @@ function getTranslationKeys(filePath: string): string[] {
 
 // Key 객체의 key-value 일치 여부를 검사하는 함수
 function checkKeyValuePairs<Key extends Record<string, string>>(
-  keyObject: Key,
+  keyObject: Key
 ): string[] {
   const mismatchedPairs = Object.entries(keyObject)
     .filter(([key, value]) => key !== value)
@@ -53,11 +53,11 @@ function run({
   autoRemove?: boolean;
 }) {
   console.log(
-    chalk.cyan("\n══════════════════════════════════════════════════"),
+    chalk.cyan("\n══════════════════════════════════════════════════")
   );
   console.log(chalk.cyan.bold(`${projectName} 번역 키 검사 시작`));
   console.log(
-    chalk.cyan("═════════════════════���════════════════════════════\n"),
+    chalk.cyan("═════════════════════���════════════════════════════\n")
   );
 
   // Key 객체의 key-value 일치 여부 검사
@@ -79,7 +79,7 @@ function run({
     const translationPath = path.join(
       translationsDir,
       lang,
-      "translation.json",
+      "translation.json"
     );
 
     // 파일 경로를 VSCode 링크로 변환
@@ -99,12 +99,12 @@ function run({
 
     // 누락된 키 찾기
     const missingKeys = sourceKeys.filter(
-      (key) => !translationKeys.includes(key),
+      (key) => !translationKeys.includes(key)
     );
 
     // 불필요한 키 찾기
     const unnecessaryKeys = translationKeys.filter(
-      (key) => !sourceKeys.includes(key),
+      (key) => !sourceKeys.includes(key)
     );
 
     if (missingKeys.length > 0) {
@@ -114,7 +114,7 @@ function run({
       for (let i = 0; i < missingKeys.length; i += 10) {
         const group = missingKeys.slice(i, i + 10);
         console.log(
-          chalk.red("  " + group.map((key) => `- ${key}`).join("\n  ")),
+          chalk.red("  " + group.map((key) => `- ${key}`).join("\n  "))
         );
         if (i + 10 < missingKeys.length) console.log();
       }
@@ -122,14 +122,14 @@ function run({
 
     if (unnecessaryKeys.length > 0) {
       console.log(
-        chalk.yellow(`\n  ⚠️  불필요한 키: (총 ${unnecessaryKeys.length}개)`),
+        chalk.yellow(`\n  ⚠️  불필요한 키: (총 ${unnecessaryKeys.length}개)`)
       );
       console.log(chalk.gray("  " + "-".repeat(40)));
       // 10개씩 그룹화하여 출력
       for (let i = 0; i < unnecessaryKeys.length; i += 10) {
         const group = unnecessaryKeys.slice(i, i + 10);
         console.log(
-          chalk.yellow("  " + group.map((key) => `- ${key}`).join("\n  ")),
+          chalk.yellow("  " + group.map((key) => `- ${key}`).join("\n  "))
         );
         if (i + 10 < unnecessaryKeys.length) console.log();
       }
@@ -139,8 +139,8 @@ function run({
         removeUnnecessaryKeys(translationPath, unnecessaryKeys);
         console.log(
           chalk.green(
-            `\n  ✅ ${unnecessaryKeys.length}개의 불필요한 키가 삭제되었습니다.`,
-          ),
+            `\n  ✅ ${unnecessaryKeys.length}개의 불필요한 키가 삭제되었습니다.`
+          )
         );
       }
     }
@@ -151,11 +151,11 @@ function run({
   });
 
   console.log(
-    chalk.cyan("\n══════════════════════════════════════════════════"),
+    chalk.cyan("\n══════════════════════════════════════════════════")
   );
   console.log(chalk.cyan.bold(`${projectName} 번역 키 검사 완료`));
   console.log(
-    chalk.cyan("══════════════════════════════════════════════════\n"),
+    chalk.cyan("══════════════════════════════════════════════════\n")
   );
 }
 

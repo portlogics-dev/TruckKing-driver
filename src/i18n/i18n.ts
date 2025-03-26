@@ -9,17 +9,17 @@ import en from "./locales/en.json";
 import id from "./locales/id.json";
 
 export const isSupportLanguage = (
-  language: string | LanguageType,
+  language: string | LanguageType
 ): language is LanguageType =>
   supportLanguages.includes(language as LanguageType);
 
 const getLanguageName = (
   currentLng: LanguageType,
-  languageCode: LanguageType,
+  languageCode: LanguageType
 ) => {
   try {
     return new Intl.DisplayNames([currentLng], { type: "language" }).of(
-      languageCode,
+      languageCode
     );
   } catch {
     return languageCode;

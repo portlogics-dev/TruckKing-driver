@@ -49,12 +49,7 @@ module.exports = {
       },
     ],
     // prettier
-    "prettier/prettier": [
-      "warn",
-      {
-        endOfLine: "auto",
-      },
-    ],
+    "prettier/prettier": "warn",
     // typescript-unused-vars
     "@typescript-eslint/no-unused-vars": [
       "error",
@@ -82,6 +77,34 @@ module.exports = {
       // Test files only
       files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
       extends: ["plugin:testing-library/react"],
+    },
+    {
+      files: ["./i18n/key.ts"],
+      rules: {
+        "sort-keys-fix/sort-keys-fix": [
+          "error",
+          "asc",
+          { caseSensitive: false, natural: true },
+        ],
+      },
+    },
+    {
+      // config 파일들은 JavaScript 파서로 처리
+      files: ["*.config.js", ".eslintrc.js"],
+      parser: "espree", // JavaScript 전용 파서
+      parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: "module",
+      },
+      rules: {
+        // config 파일에 필요한 규칙들 추가
+        "no-unused-vars": "error",
+        "no-undef": "error",
+        "no-console": "warn",
+      },
+      env: {
+        node: true,
+      },
     },
   ],
   parserOptions: {
