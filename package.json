@@ -5,8 +5,7 @@
   "scripts": {
     "android": "pnpm react-native run-android",
     "ios": "pnpm react-native run-ios",
-    "lint": "eslint .",
-    "format": "prettier --write .",
+    "lint": "eslint --max-warnings 0 .",
     "start": "pnpm react-native start",
     "test": "pnpm jest",
     "branch:clean": "git remote prune origin && sh ./scripts/cleanup-branches.sh",
@@ -33,12 +32,15 @@
     "@tanstack/react-query": "^5.69.0",
     "chalk": "^5.4.1",
     "dayjs": "^1.11.13",
+    "i18next": "^24.2.3",
     "jsc-android": "^250231.0.0",
     "ky": "^1.7.5",
     "react": "18.2.0",
+    "react-i18next": "^15.4.1",
     "react-native": "0.71.19",
     "react-native-gesture-handler": "^2.24.0",
     "react-native-gradle-plugin": "0.71.19",
+    "react-native-localize": "^3.4.1",
     "react-native-mmkv": "^3.2.0",
     "react-native-safe-area-context": "^5.3.0",
     "react-native-screens": "^4.9.2",
@@ -74,6 +76,7 @@
     "eslint-plugin-only-warn": "^1.1.0",
     "eslint-plugin-prettier": "^5.2.5",
     "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-sort-keys-fix": "^1.1.2",
     "eslint-plugin-testing-library": "^7.1.1",
     "gensync": "1.0.0-beta.2",
     "husky": "^9.1.7",
@@ -82,10 +85,10 @@
     "metro-react-native-babel-preset": "0.73.10",
     "prettier": "^3.1.0",
     "set-cookie-parser": "^2.7.1",
-    "typescript": "4.9.5"
+    "typescript": "5.8.2"
   },
   "jest": {
     "preset": "react-native"
   },
-  "packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
+  "packageManager": "pnpm@9.15.0"
 }

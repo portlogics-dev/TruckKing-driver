@@ -1,6 +1,16 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "allowJs": false
-  }
+    "allowJs": false,
+    "skipLibCheck": true,
+  },
+   "include": [
+    "src/**/*"  // src 디렉토리만 포함
+  ],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
 }
