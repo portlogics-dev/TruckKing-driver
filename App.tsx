@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+import RootLayout from "./src/components/RootLayout";
 import RootStack from "./src/stacks/Root";
 import "./global.css";
 
@@ -25,7 +26,9 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <SafeAreaProvider>
-            <RootStack />
+            <RootLayout>
+              <RootStack />
+            </RootLayout>
           </SafeAreaProvider>
         </NavigationContainer>
       </QueryClientProvider>

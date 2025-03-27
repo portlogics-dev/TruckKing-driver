@@ -28,6 +28,8 @@
     "@react-navigation/native-stack": "^7.3.3",
     "@tanstack/react-query": "^5.69.0",
     "chalk": "^5.4.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "i18next": "^24.2.3",
     "ky": "^1.7.5",
@@ -42,6 +44,7 @@
     "react-native-reanimated": "^3.17.1",
     "react-native-safe-area-context": "^5.3.0",
     "react-native-screens": "^4.9.2",
+    "tailwind-merge": "^3.0.2",
     "tailwindcss": "^3.4.17",
     "zustand": "^5.0.3"
   },
