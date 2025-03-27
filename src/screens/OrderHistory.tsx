@@ -1,15 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import {
-  View,
-  useColorScheme,
-  StatusBar,
-  ScrollView,
-  Button,
-} from "react-native";
+import { View, StatusBar, ScrollView, Button } from "react-native";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Section from "../components/Section";
+import { useColorScheme } from "../hooks/useColorScheme";
 import { RootStackParamList } from "../type";
 
 type OrderHistoryProps = NativeStackScreenProps<
@@ -18,16 +13,16 @@ type OrderHistoryProps = NativeStackScreenProps<
 >;
 
 export default function OrderHistory({ navigation }: OrderHistoryProps) {
-  const isDarkMode = useColorScheme() === "dark";
+  const { isDarkColorScheme } = useColorScheme();
 
   const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+    backgroundColor: isDarkColorScheme ? Colors.darker : Colors.lighter,
   };
 
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
+        barStyle={isDarkColorScheme ? "light-content" : "dark-content"}
         backgroundColor={backgroundStyle.backgroundColor}
       />
       <ScrollView
@@ -37,7 +32,7 @@ export default function OrderHistory({ navigation }: OrderHistoryProps) {
         <Header />
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: isDarkColorScheme ? Colors.black : Colors.white,
           }}
         >
           <Section title="Home Screen">

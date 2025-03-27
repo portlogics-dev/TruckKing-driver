@@ -2,7 +2,11 @@
   "extends": "@react-native/typescript-config/tsconfig.json",
   "compilerOptions": {
     "allowJs": false,
-    "types": ["nativewind/types"]
+    "types": ["nativewind/types"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["*"]
+    }
   },
    "include": [
     "src/**/*"  // src 디렉토리만 포함
