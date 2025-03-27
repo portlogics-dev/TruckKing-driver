@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# pnpm 버전 체크 및 설정
+check_pnpm_version() {
+    local required_pnpm_version=$(node -p "require('./package.json').packageManager.replace(/^pnpm@|[^0-9.]/g, '')")
+    local current_pnpm_version=$(pnpm --version)
+    
+    if [ "$current_pnpm_version" != "$required_pnpm_version" ]; then
+        echo "❌ pnpm 버전 불일치: 현재 $current_pnpm_version, 필요 버전 $required_pnpm_version"
+        echo "💡 다음 명령어로 필요한 버전을 설치하세요: npm install -g pnpm@$required_pnpm_version"
+        return 1
+    fi
+    return 0
+}
+
+# 변경된 파일 목록 가져오기
+changed_files="$(git diff-tree -r --name-only --no-commit-id ORIG_HEAD HEAD 2>/dev/null || true)"
+
+check_run() {
+    if echo "$changed_files" | grep -q "$1"; then
+        echo "$INSTALL_MESSAGE"
+        
+        # pnpm-lock.yaml이 변경된 경우에만 pnpm 버전 체크
+        if echo "$changed_files" | grep -q "$LOCK_FILE"; then
+            echo "🔍 pnpm 버전을 확인합니다..."
+            if ! check_pnpm_version; then
+                echo "❌ pnpm 버전 체크 실패"
+                return 1
+            fi
+        fi
+        
+        output=$(eval "$2" 2>&1)
+        if [ $? -eq 0 ]; then
+            echo "$RESULT_MESSAGE"
+            return 0
+        else
+            echo "❌ 패키지 설치 중 오류가 발생했습니다:"
+            echo "-------------------"
+            echo "$output"
+            echo "-------------------"
+            return 1
+        fi
+    fi
+}
+
+LOCK_FILE="pnpm-lock.yaml"
+INSTALL_MESSAGE="🔍 원격 저장소의 pnpm-lock.yaml이 변경되었습니다. pnpm install을 실행합니다."
+INSTALL_COMMAND="pnpm install --frozen-lockfile"
+RESULT_MESSAGE="✅ 패키지 의존성 업데이트 완료!"
+
+check_run "$LOCK_FILE" "$INSTALL_COMMAND"

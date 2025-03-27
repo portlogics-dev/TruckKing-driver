@@ -2,12 +2,14 @@
  * @format
  */
 
-import React from 'react';
-import ReactTestRenderer from 'react-test-renderer';
-import App from '../App';
+import { render } from "@testing-library/react-native";
 
-test('renders correctly', async () => {
-  await ReactTestRenderer.act(() => {
-    ReactTestRenderer.create(<App />);
+import App from "../App";
+
+describe("App", () => {
+  it("renders correctly", () => {
+    render(<App />);
+    // 필요한 경우 특정 요소를 찾아서 테스트
+    // expect(getByTestId('some-test-id')).toBeTruthy();
   });
 });
