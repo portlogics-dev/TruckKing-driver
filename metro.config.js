@@ -1,9 +1,12 @@
-import { makeMetroConfig } from "@rnx-kit/metro-config";
-import MetroSymlinksResolver from "@rnx-kit/metro-resolver-symlinks";
+const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
+const { withNativeWind } = require("nativewind/metro");
 
-export default makeMetroConfig({
-  projectRoot: __dirname,
-  resolver: {
-    resolveRequest: MetroSymlinksResolver(),
-  },
-});
+/**
+ * Metro configuration
+ * https://reactnative.dev/docs/metro
+ *
+ * @type {import('@react-native/metro-config').MetroConfig}
+ */
+const config = mergeConfig(getDefaultConfig(__dirname), {});
+
+module.exports = withNativeWind(config, { input: "./global.css" });

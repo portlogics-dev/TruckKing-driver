@@ -4,8 +4,9 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import RootStack from "./src/stacks/Root";
+import "./global.css";
 
-function App(): JSX.Element {
+function App() {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {

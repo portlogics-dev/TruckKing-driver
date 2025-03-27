@@ -35,7 +35,9 @@ class mmkvStorage {
   // 객체 데이터 조회
   static getObject<T>(key: StorageKey): T | null {
     const value = storage.getString(key);
-    if (!value) return null;
+    if (!value) {
+      return null;
+    }
     try {
       return JSON.parse(value) as T;
     } catch {
@@ -154,7 +156,7 @@ class CookieStorage {
 
   static parseAndSet(combinedCookiesHeader: string): void {
     const splitCookieHeaders = setCookie.splitCookiesString(
-      combinedCookiesHeader,
+      combinedCookiesHeader
     );
     const cookies = setCookie.parse(splitCookieHeaders);
     cookies.forEach((cookie) => this.set(cookie));
