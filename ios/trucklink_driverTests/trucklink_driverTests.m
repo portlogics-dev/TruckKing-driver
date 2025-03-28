@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface trucklink_driverTests : XCTestCase
+@interface truckking_driverTests : XCTestCase
 
 @end
 
-@implementation trucklink_driverTests
+@implementation truckking_driverTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

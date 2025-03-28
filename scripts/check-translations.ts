@@ -7,7 +7,7 @@ const TRANSLATIONS_DIR = "src/i18n/locales";
 
 function main() {
   run({
-    projectName: "trucklink",
+    projectName: "truckking",
     keyObject: Key,
     translationsDir: TRANSLATIONS_DIR,
     supportedLanguages: supportLanguages,
