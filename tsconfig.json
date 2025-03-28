@@ -14,7 +14,7 @@
   },
   "include": [
     "src/**/*", // src 디렉토리만 포함
-    "nativewind-env.d.ts"
+    "truckking.d.ts"
   ],
   "exclude": [
     "node_modules",

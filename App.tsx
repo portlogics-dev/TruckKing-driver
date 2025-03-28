@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { View, ActivityIndicator, StyleSheet } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -31,7 +31,7 @@ function App() {
 
   if (isLoading) {
     return (
-      <View style={styles.splash}>
+      <View className="flex-1 justify-center items-center bg-background">
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
@@ -52,12 +52,4 @@ function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  splash: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-});
 export default App;
