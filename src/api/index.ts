@@ -3,6 +3,8 @@ import dayjs, { extend } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import ky from "ky";
 
+import { accessTokenName, refreshTokenName } from "../constants/tokens";
+import { useAuthStore } from "../store";
 import { CookieStorage } from "../utils/storage";
 
 extend(utc);
@@ -68,8 +70,9 @@ export const useLogin = ({
 }: {
   vehicleNumber: number;
   pincode: number;
-}) =>
-  useMutation({
+}) => {
+  const setIsSignedIn = useAuthStore((state) => state.setIsSignedIn);
+  return useMutation({
     mutationFn: async () =>
       await api.post("/driver/login", {
         json: {
@@ -77,19 +80,24 @@ export const useLogin = ({
           pincode,
         },
       }),
+    onSuccess: () => setIsSignedIn(true),
   });
+};
 
-export const useLogout = () =>
-  useMutation({
+export const useLogout = () => {
+  const setIsSignedIn = useAuthStore((state) => state.setIsSignedIn);
+  return useMutation({
     mutationFn: async () => await api.post("/driver/logout"),
     onSuccess: (res) => {
       if (res.ok) {
-        CookieStorage.delete("Authentication");
-        CookieStorage.delete("Refresh-Token");
+        CookieStorage.delete(accessTokenName);
+        CookieStorage.delete(refreshTokenName);
         CookieStorage.cleanExpired();
+        setIsSignedIn(false);
       }
     },
   });
+};
 
 export const useUpdatePincode = ({ pincode }: { pincode: string }) =>
   useMutation({
@@ -101,8 +109,8 @@ export const useDeleteAccount = () =>
     mutationFn: async () => await api.delete("/driver"),
     onSuccess: (res) => {
       if (res.ok) {
-        CookieStorage.delete("Authentication");
-        CookieStorage.delete("Refresh-Token");
+        CookieStorage.delete(accessTokenName);
+        CookieStorage.delete(refreshTokenName);
         CookieStorage.cleanExpired();
       }
     },
