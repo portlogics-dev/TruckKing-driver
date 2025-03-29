@@ -61,10 +61,7 @@ const api = ky.create({
 });
 
 // authentication
-const updatePincode = async ({ pincode }: { pincode: string }) =>
-  await api.put("driver/pincode", { json: { pincode } });
-
-export const useLogin = () =>
+export const useSignin = () =>
   useMutation({
     mutationFn: async ({
       vehicleNumber,
@@ -81,7 +78,7 @@ export const useLogin = () =>
       }),
   });
 
-export const useLogout = () => {
+export const useSignout = () => {
   const setIsSignedIn = useAuthStore((state) => state.setIsSignedIn);
   return useMutation({
     mutationFn: async () => await api.post("driver/logout"),
@@ -97,9 +94,21 @@ export const useLogout = () => {
   });
 };
 
-export const useUpdatePincode = ({ pincode }: { pincode: string }) =>
+export const useSignup = () =>
   useMutation({
-    mutationFn: () => updatePincode({ pincode }),
+    mutationFn: async ({
+      vehicleNumber,
+      pincode,
+    }: {
+      vehicleNumber: string;
+      pincode: string;
+    }) => await api.post("driver/", { json: { vehicleNumber, pincode } }),
+  });
+
+export const useUpdatePincode = () =>
+  useMutation({
+    mutationFn: async ({ pincode }: { pincode: string }) =>
+      await api.put("driver/pincode", { json: { pincode } }),
   });
 
 export const useDeleteAccount = () =>

@@ -1,5 +1,5 @@
-const { getDefaultConfig, mergeConfig } = require("@react-native/metro-config");
-const { withNativeWind } = require("nativewind/metro");
+import { getDefaultConfig, mergeConfig } from "@react-native/metro-config";
+import { withNativeWind } from "nativewind/metro";
 
 /**
  * Metro configuration

@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Button, Text, TextInput, View } from "react-native";
+import { Button, Pressable, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
-import { useLogin } from "@/api";
+import { useSignin } from "@/api";
 import { useI18n } from "@/i18n";
 import { useAuthStore } from "@/store";
 import { AuthStackScreenProps } from "@/type";
@@ -20,14 +20,17 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
     setIsSignedIn,
   } = useAuthStore();
 
-  const loginFormSchema = z.object({
+  const signinFormSchema = z.object({
     vehicleNumber: z.string().min(1, { message: t("Truck Number required.") }),
-    password: z.string().min(1, { message: t("Password required.") }),
+    password: z
+      .string()
+      .min(1, { message: t("Password required.") })
+      .max(4),
     remember: z.boolean(),
   });
 
-  const form = useForm<z.infer<typeof loginFormSchema>>({
-    resolver: zodResolver(loginFormSchema),
+  const form = useForm<z.infer<typeof signinFormSchema>>({
+    resolver: zodResolver(signinFormSchema),
     defaultValues: {
       vehicleNumber: rememberVehicleNumber,
       password: "",
@@ -35,9 +38,9 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
     },
   });
 
-  const loginMutation = useLogin();
+  const signinMutation = useSignin();
 
-  const onSubmit: SubmitHandler<z.infer<typeof loginFormSchema>> = async (
+  const onSubmit: SubmitHandler<z.infer<typeof signinFormSchema>> = async (
     values
   ) => {
     if (values.remember) {
@@ -48,7 +51,7 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
       setRememberVehicleNumber("");
     }
 
-    const result = await loginMutation.mutateAsync({
+    const result = await signinMutation.mutateAsync({
       vehicleNumber: values.vehicleNumber,
       pincode: values.password,
     });
@@ -75,7 +78,7 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
           name="vehicleNumber"
           render={({ field: { onChange, value } }) => (
             <TextInput
-              placeholder="Truck Number"
+              placeholder={t("Truck Number")}
               value={value}
               onChangeText={onChange}
             />
@@ -89,7 +92,7 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
           name="password"
           render={({ field: { onChange, value } }) => (
             <TextInput
-              placeholder="Password"
+              placeholder={t("Password")}
               value={value}
               onChangeText={onChange}
               keyboardType="numeric"
@@ -101,12 +104,23 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
         {form.formState.errors.password && (
           <Text>{form.formState.errors.password.message}</Text>
         )}
-        <Button title="Sign In" onPress={form.handleSubmit(onSubmit)} />
+        <Button
+          title={t("Sign in")}
+          onPress={form.handleSubmit(onSubmit)}
+          className="rounded-md"
+        />
       </View>
       <View className="flex gap-2">
-        <Text onPress={() => navigation.navigate("SignUp")}>
-          {t("Sign up")}
-        </Text>
+        {/* <Pressable
+          onPress={() =>
+            Toast.show({ text1: "Contact", text2: "014-234-1456" })
+          }
+        >
+          <Text>{t("Forgot password")}</Text>
+        </Pressable> */}
+        <Pressable onPress={() => navigation.navigate("SignUp")}>
+          <Text className="text-link">{t("Sign up")}</Text>
+        </Pressable>
       </View>
     </View>
   );
