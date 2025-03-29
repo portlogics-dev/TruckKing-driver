@@ -7,8 +7,12 @@ import { storage, CookieStorage } from "../utils/storage";
 interface AuthState {
   isSignedIn: boolean;
   isLoading: boolean;
+  remember: boolean;
+  rememberVehicleNumber: string;
   setIsSignedIn: (value: boolean) => void;
   checkAuth: () => Promise<void>;
+  setRemember: (value: boolean) => void;
+  setRememberVehicleNumber: (value: string) => void;
 }
 
 const useAuthStore = create<AuthState>()(
@@ -16,7 +20,9 @@ const useAuthStore = create<AuthState>()(
     (set) => ({
       isLoading: true,
       isSignedIn: false,
-      setIsSignedIn: (value) => set({ isSignedIn: value }),
+      remember: false,
+      rememberVehicleNumber: "",
+      setIsSignedIn: (value: boolean) => set({ isSignedIn: value }),
       checkAuth: async () => {
         try {
           const accessToken = CookieStorage.get(accessTokenName);
@@ -32,6 +38,9 @@ const useAuthStore = create<AuthState>()(
           set({ isSignedIn: false, isLoading: false });
         }
       },
+      setRemember: (value: boolean) => set({ remember: value }),
+      setRememberVehicleNumber: (value: string) =>
+        set({ rememberVehicleNumber: value }),
     }),
     {
       name: "auth-storage",
