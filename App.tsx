@@ -4,9 +4,11 @@ import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
 import RootStack from "./src/stacks/Root";
 import { useAuthStore } from "./src/store";
+
 import "./global.css";
 
 function App() {
@@ -38,15 +40,14 @@ function App() {
   }
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView className="flex-1">
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <SafeAreaProvider>
-            <View>
-              <RootStack />
-            </View>
+            <RootStack />
           </SafeAreaProvider>
         </NavigationContainer>
+        <Toast />
       </QueryClientProvider>
     </GestureHandlerRootView>
   );
