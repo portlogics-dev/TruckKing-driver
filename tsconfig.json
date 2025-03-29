@@ -9,11 +9,15 @@
     "paths": {
       "~/*": [
         "*"
+      ],
+      "@/*": [
+        "src/*"
       ]
     }
   },
   "include": [
-    "src/**/*", // src 디렉토리만 포함
+    "App.tsx",
+    "src/**/*",
     "nativewind-env.d.ts"
   ],
   "exclude": [

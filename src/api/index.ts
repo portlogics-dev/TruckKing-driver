@@ -3,6 +3,8 @@ import dayjs, { extend } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import ky from "ky";
 
+import { accessTokenName, refreshTokenName } from "../constants/tokens";
+import { useAuthStore } from "../store";
 import { CookieStorage } from "../utils/storage";
 
 extend(utc);
@@ -18,7 +20,7 @@ type ErrorResponse = {
 };
 
 const api = ky.create({
-  prefixUrl: "https://api.example.com", // todo: get env base URL
+  prefixUrl: "https://driver-api.truck-king.co", // todo: get env base URL
   hooks: {
     beforeRequest: [
       async (request) => {
@@ -59,19 +61,16 @@ const api = ky.create({
 });
 
 // authentication
-const updatePincode = async ({ pincode }: { pincode: string }) =>
-  await api.put("/driver/pincode", { json: { pincode } });
-
-export const useLogin = ({
-  vehicleNumber,
-  pincode,
-}: {
-  vehicleNumber: number;
-  pincode: number;
-}) =>
+export const useSignin = () =>
   useMutation({
-    mutationFn: async () =>
-      await api.post("/driver/login", {
+    mutationFn: async ({
+      vehicleNumber,
+      pincode,
+    }: {
+      vehicleNumber: string;
+      pincode: string;
+    }) =>
+      await api.post("driver/login", {
         json: {
           vehicleNumber,
           pincode,
@@ -79,30 +78,47 @@ export const useLogin = ({
       }),
   });
 
-export const useLogout = () =>
-  useMutation({
-    mutationFn: async () => await api.post("/driver/logout"),
+export const useSignout = () => {
+  const setIsSignedIn = useAuthStore((state) => state.setIsSignedIn);
+  return useMutation({
+    mutationFn: async () => await api.post("driver/logout"),
     onSuccess: (res) => {
+      // TODO: 비즈니스 로직 바깥으로 빼기
       if (res.ok) {
-        CookieStorage.delete("Authentication");
-        CookieStorage.delete("Refresh-Token");
+        CookieStorage.delete(accessTokenName);
+        CookieStorage.delete(refreshTokenName);
         CookieStorage.cleanExpired();
+        setIsSignedIn(false);
       }
     },
   });
+};
 
-export const useUpdatePincode = ({ pincode }: { pincode: string }) =>
+export const useSignup = () =>
   useMutation({
-    mutationFn: () => updatePincode({ pincode }),
+    mutationFn: async ({
+      vehicleNumber,
+      pincode,
+    }: {
+      vehicleNumber: string;
+      pincode: string;
+    }) => await api.post("driver/", { json: { vehicleNumber, pincode } }),
+  });
+
+export const useUpdatePincode = () =>
+  useMutation({
+    mutationFn: async ({ pincode }: { pincode: string }) =>
+      await api.put("driver/pincode", { json: { pincode } }),
   });
 
 export const useDeleteAccount = () =>
   useMutation({
-    mutationFn: async () => await api.delete("/driver"),
+    mutationFn: async () => await api.delete("driver"),
     onSuccess: (res) => {
+      // TODO: 비즈니스 로직 바깥으로 빼기
       if (res.ok) {
-        CookieStorage.delete("Authentication");
-        CookieStorage.delete("Refresh-Token");
+        CookieStorage.delete(accessTokenName);
+        CookieStorage.delete(refreshTokenName);
         CookieStorage.cleanExpired();
       }
     },
@@ -110,7 +126,7 @@ export const useDeleteAccount = () =>
 
 // driver queries
 const getDriverInfo = async () =>
-  await api.get("/driver").json<{
+  await api.get("driver").json<{
     id: number;
     name: string;
     phoneNumber: string;
@@ -130,7 +146,7 @@ const updateDriverInfo = async ({
     vehicleNumber: string;
     vehicleType: string;
   };
-}) => await api.put(`/driver/${driverId}`, { json: body });
+}) => await api.put(`driver/${driverId}`, { json: body });
 
 const driverKeys = {
   all: ["driver"] as const,
@@ -180,7 +196,7 @@ enum OrderStatus {
 }
 
 const getOrderDetail = async ({ orderId }: { orderId: number }) =>
-  await api.get(`/order/${orderId}`).json<{
+  await api.get(`order/${orderId}`).json<{
     id: number;
     companyId: number;
     companyName: string;
@@ -206,7 +222,7 @@ const getOrderDetail = async ({ orderId }: { orderId: number }) =>
   }>();
 
 const getOrderHistory = async () =>
-  await api.get("/order").json<{
+  await api.get("order").json<{
     content: {
       id: number;
       companyId: number;
@@ -241,7 +257,7 @@ const updateOrderStatus = async ({
     updateTime: string | null; // UTC
   };
 }) =>
-  await api.put(`/order/${orderId}`, { json: body }).json<{
+  await api.put(`order/${orderId}`, { json: body }).json<{
     id: number;
     companyId: number;
     companyName: string;

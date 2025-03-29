@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
-const { hairlineWidth } = require("nativewind/theme");
+import { hairlineWidth } from "nativewind/theme";
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all of your component files.
   darkMode: "class",
   content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
-  presets: [require("nativewind/preset")],
+  presets: [import("nativewind/preset")],
   theme: {
     extend: {
       colors: {

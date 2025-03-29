@@ -3,12 +3,12 @@ import { View, StatusBar, ScrollView, Button } from "react-native";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Section from "../components/Section";
-import { useColorScheme } from "../hooks/useColorScheme";
-import { RootStackParamList } from "../type";
+import Section from "../../components/Section";
+import { useColorScheme } from "../../hooks/useColorScheme";
+import { MainStackParamList } from "../../type";
 
 type OrderHistoryProps = NativeStackScreenProps<
-  RootStackParamList,
+  MainStackParamList,
   "OrderHistory"
 >;
 

@@ -1,10 +1,14 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
+import { View, ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 
-import RootLayout from "./src/components/RootLayout";
 import RootStack from "./src/stacks/Root";
+import { useAuthStore } from "./src/store";
+
 import "./global.css";
 
 function App() {
@@ -21,16 +25,29 @@ function App() {
     },
   });
 
+  const { isLoading, checkAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-background">
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView className="flex-1">
       <QueryClientProvider client={queryClient}>
         <NavigationContainer>
           <SafeAreaProvider>
-            <RootLayout>
-              <RootStack />
-            </RootLayout>
+            <RootStack />
           </SafeAreaProvider>
         </NavigationContainer>
+        <Toast />
       </QueryClientProvider>
     </GestureHandlerRootView>
   );

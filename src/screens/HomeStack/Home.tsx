@@ -3,13 +3,13 @@ import { View, StatusBar, ScrollView, Button } from "react-native";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Section from "../components/Section";
-import { useColorScheme } from "../hooks/useColorScheme";
-import { RootStackParamList } from "../type";
+import Section from "../../components/Section";
+import { useColorScheme } from "../../hooks/useColorScheme";
+import { MainStackParamList } from "../../type";
 
-type SettingsProps = NativeStackScreenProps<RootStackParamList, "Settings">;
+type HomeProps = NativeStackScreenProps<MainStackParamList, "Home">;
 
-export default function Settings({ navigation }: SettingsProps) {
+export default function Home({ navigation }: HomeProps) {
   const { isDarkColorScheme } = useColorScheme();
 
   const backgroundStyle = {
@@ -35,7 +35,7 @@ export default function Settings({ navigation }: SettingsProps) {
           <Section title="Home Screen">
             <Button
               title="Go to Details"
-              onPress={() => navigation.navigate("Settings")}
+              onPress={() => navigation.navigate("OrderHistory")}
             />
           </Section>
         </View>
