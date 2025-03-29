@@ -9,12 +9,16 @@
     "paths": {
       "~/*": [
         "*"
+      ],
+      "@/*": [
+        "src/*"
       ]
     }
   },
   "include": [
-    "src/**/*", // src 디렉토리만 포함
-    "truckking.d.ts"
+    "App.tsx",
+    "src/**/*",
+    "nativewind-env.d.ts"
   ],
   "exclude": [
     "node_modules",
