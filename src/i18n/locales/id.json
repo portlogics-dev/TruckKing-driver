@@ -1,3 +1,11 @@
 {
-  "": ""
+  "": "",
+  "Sign in": "Masuk",
+  "Truck Number": "Nomor Truk",
+  "Password": "Kata Sandi",
+  "Truck Number required.": "Nomor Truk diperlukan",
+  "Password required.": "Kata Sandi diperlukan",
+  "Sign in failed": "Gagal masuk",
+  "Please check your truck number and password.": "Silakan periksa nomor truk dan kata sandi Anda.",
+  "Sign up": "Daftar"
 }

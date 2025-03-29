@@ -9,7 +9,7 @@ module.exports = {
     "plugin:@typescript-eslint/recommended",
     "prettier",
   ],
-  plugins: ["import", "@typescript-eslint", "prettier"],
+  plugins: ["import", "@typescript-eslint", "prettier", "sort-keys-fix"],
   settings: {
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"],
@@ -79,7 +79,7 @@ module.exports = {
       extends: ["plugin:testing-library/react"],
     },
     {
-      files: ["./i18n/key.ts"],
+      files: ["./src/i18n/key.ts"],
       rules: {
         "sort-keys-fix/sort-keys-fix": [
           "error",
