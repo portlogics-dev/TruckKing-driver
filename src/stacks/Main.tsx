@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { HouseIcon, TruckIcon, UserIcon } from "../lib/icons";
-import Home from "../screens/HomeStack/Home";
-import OrderHistory from "../screens/HomeStack/OrderHistory";
-import Settings from "../screens/HomeStack/Settings";
-import { MainStackParamList } from "../type";
+import { HouseIcon, TruckIcon, UserIcon } from "@/lib/icons";
+import Home from "@/screens/HomeStack/Home";
+import OrderHistory from "@/screens/HomeStack/OrderHistory";
+import Settings from "@/screens/HomeStack/Settings";
+import { MainStackParamList } from "@/type";
 
 const BottomTab = createBottomTabNavigator<MainStackParamList, "MainStack">();
 
