@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Button, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
@@ -114,11 +114,12 @@ const SignUp = ({ navigation }: AuthStackScreenProps<"SignUp">) => {
         {form.formState.errors.confirmPW && (
           <Text>{form.formState.errors.confirmPW.message}</Text>
         )}
-        <Button
-          title={t("Sign up")}
+        <Pressable
           onPress={form.handleSubmit(onSubmit)}
-          className="rounded-md"
-        />
+          className="rounded-md bg-primary text-accent"
+        >
+          <Text>{t("Sign up")}</Text>
+        </Pressable>
       </View>
     </View>
   );
