@@ -1,11 +1,19 @@
 {
   "": "",
-  "Sign in": "Masuk",
-  "Truck Number": "Nomor Truk",
+  "Confirm Password": "Konfirmasi Kata Sandi",
+  "Home": "Beranda",
+  "Order History": "Riwayat Pesanan",
   "Password": "Kata Sandi",
-  "Truck Number required.": "Nomor Truk diperlukan",
   "Password required.": "Kata Sandi diperlukan",
+  "Passwords do not match.": "Kata sandi tidak cocok",
+  "Please check your truck number and password again.": "Silakan periksa nomor truk dan kata sandi Anda",
+  "Please sign in.": "Silakan masuk",
+  "Settings": "Pengaturan",
+  "Sign in": "Masuk",
   "Sign in failed": "Gagal masuk",
-  "Please check your truck number and password.": "Silakan periksa nomor truk dan kata sandi Anda.",
-  "Sign up": "Daftar"
+  "Sign up": "Daftar",
+  "Sign up failed": "Gagal mendaftar",
+  "Sign up success": "Pendaftaran berhasil",
+  "Truck Number": "Nomor Truk",
+  "Truck Number required.": "Nomor Truk diperlukan"
 }

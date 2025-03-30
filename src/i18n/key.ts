@@ -1,12 +1,15 @@
 export const key = {
   "": "",
   "Confirm Password": "Confirm Password",
+  Home: "Home",
+  "Order History": "Order History",
   Password: "Password",
   "Password required.": "Password required.",
   "Passwords do not match.": "Passwords do not match.",
   "Please check your truck number and password again.":
     "Please check your truck number and password again.",
   "Please sign in.": "Please sign in.",
+  Settings: "Settings",
   "Sign in": "Sign in",
   "Sign in failed": "Sign in failed",
   "Sign up": "Sign up",
