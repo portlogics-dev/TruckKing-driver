@@ -27,3 +27,14 @@ export type MainStackScreenProps<T extends keyof MainStackParamList> =
 declare module "@react-navigation/native" {
   type RootParamList = RootStackParamList;
 }
+
+export enum OrderStatus { // 미완
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  CANCELED = "CANCELED",
+  PENDING = "PENDING",
+}
+
+export function isOrderStatus(value: string): value is OrderStatus {
+  return Object.values(OrderStatus).includes(value as OrderStatus);
+}

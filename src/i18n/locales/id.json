@@ -1,6 +1,12 @@
 {
   "": "",
   "Confirm Password": "Konfirmasi Kata Sandi",
+  "Contact": "Kontak",
+  "Details": "Detail",
+  "Retry": "Coba Lagi",
+  "Loading": "Memuat",
+  "Unloading": "Membongkar",
+  "order not found": "pesanan tidak ditemukan",
   "Home": "Beranda",
   "Order History": "Riwayat Pesanan",
   "Password": "Kata Sandi",
@@ -15,5 +21,7 @@
   "Sign up failed": "Gagal mendaftar",
   "Sign up success": "Pendaftaran berhasil",
   "Truck Number": "Nomor Truk",
-  "Truck Number required.": "Nomor Truk diperlukan"
+  "Truck Number required.": "Nomor Truk diperlukan",
+  "Price": "Harga",
+  "Weight": "Berat"
 }
