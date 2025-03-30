@@ -1,10 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
 import { useSignup } from "@/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 import { useI18n } from "@/i18n";
 import { AuthStackScreenProps } from "@/type";
 
@@ -63,63 +66,75 @@ const SignUp = ({ navigation }: AuthStackScreenProps<"SignUp">) => {
   };
 
   return (
-    <View className="flex justify-center items-center gap-4">
+    <View className="flex flex-1 justify-center">
       {/* <Image source={"/"} /> */}
-      <View className="flex gap-2">
+      <View className="flex gap-4">
         <Controller
           control={form.control}
           name="vehicleNumber"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder={t("Truck Number")}
-              value={value}
-              onChangeText={onChange}
-            />
+            <View>
+              <Input
+                placeholder={t("Truck Number")}
+                value={value}
+                onChangeText={onChange}
+              />
+              {form.formState.errors.vehicleNumber && (
+                <Text className="text-destructive">
+                  {form.formState.errors.vehicleNumber.message}
+                </Text>
+              )}
+            </View>
           )}
         />
-        {form.formState.errors.vehicleNumber && (
-          <Text>{form.formState.errors.vehicleNumber.message}</Text>
-        )}
+
         <Controller
           control={form.control}
           name="password"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder={t("Password")}
-              value={value}
-              onChangeText={onChange}
-              keyboardType="numeric"
-              maxLength={4}
-              secureTextEntry
-            />
+            <View>
+              <Input
+                placeholder={t("Password")}
+                value={value}
+                onChangeText={onChange}
+                keyboardType="numeric"
+                maxLength={4}
+                secureTextEntry
+              />
+              {form.formState.errors.password && (
+                <Text className="text-destructive">
+                  {form.formState.errors.password.message}
+                </Text>
+              )}
+            </View>
           )}
         />
-        {form.formState.errors.password && (
-          <Text>{form.formState.errors.password.message}</Text>
-        )}
+
         <Controller
           control={form.control}
           name="confirmPW"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              placeholder={t("Confirm Password")}
-              value={value}
-              onChangeText={onChange}
-              keyboardType="numeric"
-              maxLength={4}
-              secureTextEntry
-            />
+            <View>
+              <Input
+                placeholder={t("Confirm Password")}
+                value={value}
+                onChangeText={onChange}
+                keyboardType="numeric"
+                maxLength={4}
+                secureTextEntry
+              />
+              {form.formState.errors.confirmPW && (
+                <Text className="text-destructive">
+                  {form.formState.errors.confirmPW.message}
+                </Text>
+              )}
+            </View>
           )}
         />
-        {form.formState.errors.confirmPW && (
-          <Text>{form.formState.errors.confirmPW.message}</Text>
-        )}
-        <Pressable
-          onPress={form.handleSubmit(onSubmit)}
-          className="rounded-md bg-primary text-accent"
-        >
+
+        <Button onPress={form.handleSubmit(onSubmit)}>
           <Text>{t("Sign up")}</Text>
-        </Pressable>
+        </Button>
       </View>
     </View>
   );

@@ -3,9 +3,9 @@ import dayjs, { extend } from "dayjs";
 import utc from "dayjs/plugin/utc";
 import ky from "ky";
 
-import { accessTokenName, refreshTokenName } from "../constants/tokens";
-import { useAuthStore } from "../store";
-import { CookieStorage } from "../utils/storage";
+import { accessTokenName, refreshTokenName } from "@/constants/tokens";
+import { CookieStorage } from "@/lib/utils/storage";
+import { useAuthStore } from "@/store";
 
 extend(utc);
 
