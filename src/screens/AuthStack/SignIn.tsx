@@ -1,10 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
 import { useSignin } from "@/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 import { useI18n } from "@/i18n";
 import { useAuthStore } from "@/store";
 import { AuthStackScreenProps } from "@/type";
@@ -68,7 +71,7 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
   };
 
   return (
-    <View className="flex justify-center items-center gap-4">
+    <View className="flex flex-1 justify-center gap-4">
       <Text className="flex justify-center text-lg font-bold text-primary">
         Truck KING
       </Text>
@@ -77,7 +80,7 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
           control={form.control}
           name="vehicleNumber"
           render={({ field: { onChange, value } }) => (
-            <TextInput
+            <Input
               placeholder={t("Truck Number")}
               value={value}
               onChangeText={onChange}
@@ -85,13 +88,15 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
           )}
         />
         {form.formState.errors.vehicleNumber && (
-          <Text>{form.formState.errors.vehicleNumber.message}</Text>
+          <Text className="text-destructive">
+            {form.formState.errors.vehicleNumber.message}
+          </Text>
         )}
         <Controller
           control={form.control}
           name="password"
           render={({ field: { onChange, value } }) => (
-            <TextInput
+            <Input
               placeholder={t("Password")}
               value={value}
               onChangeText={onChange}
@@ -102,14 +107,13 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
           )}
         />
         {form.formState.errors.password && (
-          <Text>{form.formState.errors.password.message}</Text>
+          <Text className="text-destructive">
+            {form.formState.errors.password.message}
+          </Text>
         )}
-        <Pressable
-          onPress={form.handleSubmit(onSubmit)}
-          className="rounded-md bg-primary text-accent"
-        >
+        <Button onPress={form.handleSubmit(onSubmit)}>
           <Text>{t("Sign in")}</Text>
-        </Pressable>
+        </Button>
       </View>
       <View className="flex gap-2">
         {/* <Pressable

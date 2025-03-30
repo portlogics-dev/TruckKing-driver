@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+import RootLayout from "@/components/RootLayout";
 import { useAuthStore } from "@/store";
 import { RootStackParamList } from "@/type";
 
@@ -12,21 +13,23 @@ const Root = createNativeStackNavigator<RootStackParamList, "RootStack">();
 const RootStack = () => {
   const isSignedIn = useAuthStore((state) => state.isSignedIn);
   return (
-    <Root.Navigator id="RootStack">
-      {isSignedIn ? (
-        <Root.Screen
-          name="MainStack"
-          component={MainStack}
-          options={{ headerShown: false }}
-        />
-      ) : (
-        <Root.Screen
-          name="AuthStack"
-          component={AuthStack}
-          options={{ headerShown: false }}
-        />
-      )}
-    </Root.Navigator>
+    <RootLayout>
+      <Root.Navigator id="RootStack">
+        {isSignedIn ? (
+          <Root.Screen
+            name="MainStack"
+            component={MainStack}
+            options={{ headerShown: false }}
+          />
+        ) : (
+          <Root.Screen
+            name="AuthStack"
+            component={AuthStack}
+            options={{ headerShown: false }}
+          />
+        )}
+      </Root.Navigator>
+    </RootLayout>
   );
 };
 

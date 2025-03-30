@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
-import { accessTokenName, refreshTokenName } from "../constants/tokens";
-import { storage, CookieStorage } from "../utils/storage";
+import { accessTokenName, refreshTokenName } from "@/constants/tokens";
+import { storage, CookieStorage } from "@/lib/utils/storage";
 
 interface AuthState {
   isSignedIn: boolean;
