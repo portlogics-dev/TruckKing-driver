@@ -29,10 +29,12 @@ declare module "@react-navigation/native" {
 }
 
 export enum OrderStatus { // 미완
-  IN_PROGRESS = "IN_PROGRESS",
+  READY = "READY",
+  TO_LOADING = "TO_LOADING",
+  TO_UNLOADING = "TO_UNLOADING",
   COMPLETED = "COMPLETED",
-  CANCELED = "CANCELED",
   PENDING = "PENDING",
+  CANCELLED = "CANCELLED",
 }
 
 export function isOrderStatus(value: string): value is OrderStatus {

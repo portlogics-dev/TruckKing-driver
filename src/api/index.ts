@@ -108,13 +108,13 @@ export const useSignup = () =>
     }: {
       vehicleNumber: string;
       pincode: string;
-    }) => await api.post("driver/", { json: { vehicleNumber, pincode } }),
+    }) => await api.post("driver", { json: { vehicleNumber, pincode } }),
   });
 
 export const useUpdatePincode = () =>
   useMutation({
     mutationFn: async ({ pincode }: { pincode: string }) =>
-      await api.put("driver/pincode", { json: { pincode } }),
+      await api.put("driver/update-pincode", { json: { pincode } }),
   });
 
 export const useDeleteAccount = () =>
@@ -130,30 +130,7 @@ export const useDeleteAccount = () =>
     },
   });
 
-// driver queries
-const getDriverInfo = async () =>
-  await api.get("driver").json<{
-    id: number;
-    name: string;
-    phoneNumber: string;
-    vehicleNumber: string;
-    vehicleTypeName: string;
-    vehicleTypeValue: string;
-  }>();
-
-const updateDriverInfo = async ({
-  driverId,
-  body,
-}: {
-  driverId: number;
-  body: {
-    name: string;
-    phoneNumber: string;
-    vehicleNumber: string;
-    vehicleType: string;
-  };
-}) => await api.put(`driver/${driverId}`, { json: body });
-
+// driver
 const driverKeys = {
   all: ["driver"] as const,
   info: () => [...driverKeys.all, "info"] as const,
@@ -162,29 +139,28 @@ const driverKeys = {
 export const useDriverInfo = () =>
   useQuery({
     queryKey: ["driver"],
-    queryFn: getDriverInfo,
+    queryFn: async () =>
+      await api.get("driver").json<{
+        id: number;
+        name: string;
+        phoneNumber: string;
+        vehicleNumber: string;
+        vehicleTypeName: string;
+        vehicleTypeValue: string;
+      }>(),
   });
 
 export const useUpdateDriverInfo = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({
-      driverId,
-      body,
-    }: {
-      driverId: number;
-      body: {
-        name: string;
-        phoneNumber: string;
-        vehicleNumber: string;
-        vehicleType: string;
-      };
-    }) =>
-      await updateDriverInfo({
-        driverId,
-        body,
-      }),
+    mutationFn: async (params: {
+      name: string;
+      phoneNumber: string;
+      vehicleNumber: string;
+      vehicleType: string;
+      pincode: string;
+    }) => await api.put("driver/update", { json: params }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: driverKeys.info() });
     },
@@ -192,121 +168,6 @@ export const useUpdateDriverInfo = () => {
 };
 
 // order
-const getCurrentOrderDetail = async () =>
-  await api.get("order").json<{
-    id: number;
-    companyId: number;
-    companyName: string;
-    loadingAddress: string;
-    loadingAddressDetail: string;
-    loadingLatitude: string;
-    loadingLongitude: string;
-    loadingExpectTime: string; // "2023-07-15T09:00:00Z"
-    unloadingAddress: string;
-    unloadingAddressDetail: string;
-    unloadingLatitude: string;
-    unloadingLongitude: string;
-    unloadingExpectTime: string; // "2023-07-15T09:00:00Z"
-    weightValue: number; // 500.5
-    weightUnit: string;
-    priceValue: number;
-    priceCurrency: string;
-    status: string;
-    transitSteps: {
-      transitSteps: {
-        id: number;
-        stepEvent: string;
-        stepEventName: string;
-        stepEventImageUrl: string;
-        latitude: number;
-        longitude: number;
-        createdAt: string;
-      }[];
-    };
-    trackResponses: {
-      tracks: { latitude: number; longitude: number; trackingTime: string }[];
-    };
-  }>();
-
-const getOrderDetail = async ({ orderId }: { orderId: number }) =>
-  await api.get(`order/${orderId}`).json<{
-    id: number;
-    companyId: number;
-    companyName: string;
-    loadingAddress: string;
-    loadingAddressDetail: string;
-    loadingLatitude: string;
-    loadingLongitude: string;
-    loadingExpectTime: string; // "2023-07-15T09:00:00Z"
-    unloadingAddress: string;
-    unloadingAddressDetail: string;
-    unloadingLatitude: string;
-    unloadingLongitude: string;
-    unloadingExpectTime: string; // "2023-07-15T09:00:00Z"
-    weightValue: number; // 500.5
-    weightUnit: string;
-    priceValue: number;
-    priceCurrency: string;
-    status: string;
-    transitSteps: {
-      transitSteps: {
-        id: number;
-        stepEvent: string;
-        stepEventName: string;
-        stepEventImageUrl: string;
-        latitude: number;
-        longitude: number;
-        createdAt: string;
-      }[];
-    };
-    trackResponses: {
-      tracks: { latitude: number; longitude: number; trackingTime: string }[];
-    };
-  }>();
-
-const getOrderHistory = async ({
-  page = 0,
-  size = 20,
-  sort = "createdAt,DESC",
-}: {
-  page: number;
-  size: number;
-  sort: string;
-}) =>
-  await api.get("order/list", { json: { page, size, sort } }).json<{
-    content: {
-      id: number;
-      companyId: number;
-      companyName: string;
-      loadingAddress: string;
-      loadingAddressDetail: string;
-      loadingExpectTime: string;
-      unloadingAddress: string;
-      unloadingAddressDetail: string;
-      unloadingExpectTime: string;
-      weightValue: number;
-      weightUnit: string;
-      priceValue: number;
-      priceCurrency: string;
-      status: string;
-    }[];
-    totalPages: number;
-    totalElements: number;
-    pageNumber: number;
-    pageSize: number;
-    isFirst: boolean;
-    isLast: boolean;
-  }>();
-
-const updateOrderStep = async (params: {
-  orderId: number;
-  stepEvent: string;
-  stepEventImage: string;
-  latitude: string | null;
-  longitude: string | null;
-  createdAt: string | null; // UTC
-}) => await api.post("transit-steps", { json: params });
-
 const orderKeys = {
   all: ["order"] as const,
   list: (params: { page: number; size: number; sort: string }) =>
@@ -319,7 +180,46 @@ const orderKeys = {
 export const useCurrentOrderDetail = () =>
   useSuspenseQuery({
     queryKey: orderKeys.currentDetail(),
-    queryFn: () => getCurrentOrderDetail(),
+    queryFn: async () =>
+      await api.get("order").json<{
+        id: number;
+        companyId: number;
+        companyName: string;
+        loadingAddress: string;
+        loadingAddressDetail: string;
+        loadingLatitude: number;
+        loadingLongitude: number;
+        loadingExpectTime: string; // "2023-07-15T09:00:00Z"
+        unloadingAddress: string;
+        unloadingAddressDetail: string;
+        unloadingLatitude: number;
+        unloadingLongitude: number;
+        unloadingExpectTime: string; // "2023-07-15T09:00:00Z"
+        weightValue: number; // 500.5
+        weightUnit: string;
+        priceValue: number;
+        priceCurrency: string;
+        status: string;
+        transitSteps: {
+          transitSteps: {
+            orderId: number;
+            stepEvent: string;
+            stepEventName: string;
+            stepEventImageUrl: string;
+            latitude: number;
+            longitude: number;
+            createdAt: string;
+          }[];
+        };
+        trackResponses: {
+          tracks: {
+            id: number;
+            latitude: number;
+            longitude: number;
+            trackingTime: string;
+          }[];
+        };
+      }>(),
     select: (data) => ({
       ...data,
       status: isOrderStatus(data.status) ? data.status : OrderStatus.PENDING,
@@ -363,7 +263,46 @@ export const useCurrentOrderDetail = () =>
 export const useOrderDetail = ({ orderId }: { orderId: number }) =>
   useQuery({
     queryKey: orderKeys.detail(orderId),
-    queryFn: () => getOrderDetail({ orderId }),
+    queryFn: async () =>
+      await api.get(`order/${orderId}`).json<{
+        id: number;
+        companyId: number;
+        companyName: string;
+        loadingAddress: string;
+        loadingAddressDetail: string;
+        loadingLatitude: number;
+        loadingLongitude: number;
+        loadingExpectTime: string; // "2023-07-15T09:00:00Z"
+        unloadingAddress: string;
+        unloadingAddressDetail: string;
+        unloadingLatitude: number;
+        unloadingLongitude: number;
+        unloadingExpectTime: string; // "2023-07-15T09:00:00Z"
+        weightValue: number; // 500.5
+        weightUnit: string;
+        priceValue: number;
+        priceCurrency: string;
+        status: string;
+        transitSteps: {
+          transitSteps: {
+            orderId: number;
+            stepEvent: string;
+            stepEventName: string;
+            stepEventImageUrl: string;
+            latitude: number;
+            longitude: number;
+            createdAt: string;
+          }[];
+        };
+        trackResponses: {
+          tracks: {
+            id: number;
+            latitude: number;
+            longitude: number;
+            trackingTime: string;
+          }[];
+        };
+      }>(),
     enabled: !!orderId,
     select: (data) => ({
       ...data,
@@ -412,7 +351,54 @@ export const useOrderHistory = (params: {
 }) =>
   useQuery({
     queryKey: orderKeys.list(params),
-    queryFn: () => getOrderHistory(params),
+    queryFn: async () =>
+      await api.get("order/list", { json: params }).json<{
+        content: {
+          id: number;
+          companyId: number;
+          companyName: string;
+          loadingAddress: string;
+          loadingAddressDetail: string;
+          loadingLatitude: number;
+          loadingLongitude: number;
+          loadingExpectTime: string;
+          unloadingAddress: string;
+          unloadingAddressDetail: string;
+          unloadingLatitude: number;
+          unloadingLongitude: number;
+          unloadingExpectTime: string;
+          weightValue: number;
+          weightUnit: string;
+          priceValue: number;
+          priceCurrency: string;
+          status: string;
+          transitSteps: {
+            transitSteps: {
+              orderId: number;
+              stepEvent: string;
+              stepEventName: string;
+              stepEventImageUrl: string;
+              latitude: number;
+              longitude: number;
+              createdAt: string;
+            }[];
+          };
+          trackResponses: {
+            tracks: {
+              id: number;
+              latitude: number;
+              longitude: number;
+              trackingTime: string;
+            }[];
+          };
+        }[];
+        totalPages: number;
+        totalElements: number;
+        pageNumber: number;
+        pageSize: number;
+        isFirst: boolean;
+        isLast: boolean;
+      }>(),
     select: (data) => ({
       ...data,
       content: data.content.map((order) => ({
@@ -459,11 +445,7 @@ export const useUpdateOrderStep = () => {
         longitude: string | null;
         createdAt: string | null; // UTC
       };
-    }) =>
-      await updateOrderStep({
-        orderId,
-        ...body,
-      }),
+    }) => await api.post("transit-steps", { json: { orderId, ...body } }),
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: orderKeys.detail(variables.orderId),

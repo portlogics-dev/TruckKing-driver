@@ -24,15 +24,15 @@ type OrderDetail = {
   loading: {
     address: string;
     addressDetail: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     expectTime: Dayjs;
   };
   unloading: {
     address: string;
     addressDetail: string;
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
     expectTime: Dayjs;
   };
   weight: {
@@ -45,7 +45,7 @@ type OrderDetail = {
   };
   status: OrderStatus;
   transitSteps: Array<{
-    id: number;
+    orderId: number;
     stepEvent: string;
     stepEventName: string;
     stepEventImageUrl: string;
@@ -53,7 +53,12 @@ type OrderDetail = {
     longitude: number;
     createdAt: Dayjs;
   }>;
-  tracks: Array<{ latitude: number; longitude: number; trackingTime: Dayjs }>;
+  tracks: Array<{
+    id: number;
+    latitude: number;
+    longitude: number;
+    trackingTime: Dayjs;
+  }>;
 };
 
 function HomeFallback({ resetError }: FallbackComponentProps) {
@@ -126,16 +131,14 @@ export function OrderDetailHeader({
 }) {
   const statusBadgeColor = () => {
     switch (status) {
-      case OrderStatus.IN_PROGRESS:
-        return "bg-sky-500";
       case OrderStatus.COMPLETED:
         return "bg-lime-500";
-      case OrderStatus.CANCELED:
+      case OrderStatus.CANCELLED:
         return "bg-red-500";
       case OrderStatus.PENDING:
         return "bg-gray-500";
       default:
-        return "bg-muted";
+        return "bg-sky-500";
     }
   };
   return (
