@@ -12,7 +12,7 @@
   "Password": "Kata Sandi",
   "Password required.": "Kata Sandi diperlukan",
   "Passwords do not match.": "Kata sandi tidak cocok",
-  "Please check your truck number and password again.": "Silakan periksa nomor truk dan kata sandi Anda",
+  "Please check your Vehicle number and password again.": "Silakan periksa nomor truk dan kata sandi Anda",
   "Please sign in.": "Silakan masuk",
   "Settings": "Pengaturan",
   "Sign in": "Masuk",
@@ -20,8 +20,14 @@
   "Sign up": "Daftar",
   "Sign up failed": "Gagal mendaftar",
   "Sign up success": "Pendaftaran berhasil",
-  "Truck Number": "Nomor Truk",
-  "Truck Number required.": "Nomor Truk diperlukan",
+  "Vehicle Number": "Nomor Truk",
+  "Vehicle Number required.": "Nomor Truk diperlukan",
+  "Vehicle Type": "Jenis Truk",
+  "Phone": "Telepon",
   "Price": "Harga",
-  "Weight": "Berat"
+  "Weight": "Berat",
+  "Name": "Nama",
+  "Name required.": "Nama diperlukan",
+  "No data": "Tidak ada data",
+  "Vehicle number must be 4-10 characters long and contain only uppercase letters and numbers": "Nomor kendaraan harus 4-10 karakter dan hanya menggunakan huruf kapital dan angka"
 }

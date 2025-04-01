@@ -7,6 +7,9 @@ import {
   CameraIcon,
   PhoneIcon,
   RotateCcwIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from "lucide-react-native";
 
 import { iconWithClassName } from "./iconWithClassName";
@@ -19,6 +22,9 @@ iconWithClassName(UserIcon);
 iconWithClassName(CameraIcon);
 iconWithClassName(PhoneIcon);
 iconWithClassName(RotateCcwIcon);
+iconWithClassName(CheckIcon);
+iconWithClassName(ChevronDownIcon);
+iconWithClassName(ChevronUpIcon);
 
 export {
   GhostIcon,
@@ -29,4 +35,7 @@ export {
   CameraIcon,
   PhoneIcon,
   RotateCcwIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
 };

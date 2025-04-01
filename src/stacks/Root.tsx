@@ -15,7 +15,7 @@ const RootStack = () => {
   return (
     <RootLayout>
       <Root.Navigator id="RootStack">
-        {!isSignedIn ? (
+        {isSignedIn ? (
           <Root.Screen
             name="MainStack"
             component={MainStack}

@@ -57,6 +57,9 @@ module.exports = {
       borderWidth: {
         hairline: hairlineWidth(),
       },
+      fill: {
+        primary: "hsl(var(--primary))",
+      },
     },
   },
   plugins: [],

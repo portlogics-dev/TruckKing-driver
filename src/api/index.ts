@@ -102,13 +102,13 @@ export const useSignout = () => {
 
 export const useSignup = () =>
   useMutation({
-    mutationFn: async ({
-      vehicleNumber,
-      pincode,
-    }: {
+    mutationFn: async (params: {
+      name: string | null;
+      phoneNumber: string | null;
       vehicleNumber: string;
-      pincode: string;
-    }) => await api.post("driver", { json: { vehicleNumber, pincode } }),
+      vehicleType: string | null;
+      pincode: string | null; // 확인필요
+    }) => await api.post("driver", { json: params }),
   });
 
 export const useUpdatePincode = () =>
@@ -134,11 +134,12 @@ export const useDeleteAccount = () =>
 const driverKeys = {
   all: ["driver"] as const,
   info: () => [...driverKeys.all, "info"] as const,
+  vehicleTypeList: () => [...driverKeys.all, "vehicle-type"] as const,
 };
 
 export const useDriverInfo = () =>
   useQuery({
-    queryKey: ["driver"],
+    queryKey: driverKeys.info(),
     queryFn: async () =>
       await api.get("driver").json<{
         id: number;
@@ -166,6 +167,17 @@ export const useUpdateDriverInfo = () => {
     },
   });
 };
+
+export const useVehicleTypeList = () =>
+  useQuery({
+    queryKey: driverKeys.vehicleTypeList(),
+    queryFn: async () =>
+      await api
+        .get("driver/vehicle-types")
+        .json<{ list: Array<{ name: string; value: string }> }>(),
+    select: (data) =>
+      data.list.map((type) => ({ label: type.value, value: type.name })), // 민준 선생님이 반대로 설명해주셔서 클라쪽에서 다시 돌려놨음
+  });
 
 // order
 const orderKeys = {
@@ -392,12 +404,9 @@ export const useOrderHistory = (params: {
             }[];
           };
         }[];
-        totalPages: number;
-        totalElements: number;
-        pageNumber: number;
-        pageSize: number;
-        isFirst: boolean;
-        isLast: boolean;
+        totalCount: number;
+        page: number;
+        size: number;
       }>(),
     select: (data) => ({
       ...data,
