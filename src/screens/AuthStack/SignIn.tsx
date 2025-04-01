@@ -1,10 +1,11 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
 import { useSignin } from "@/api";
+import TruckkingLogo from "@/assets/truckking-logo.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
@@ -24,7 +25,9 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
   } = useAuthStore();
 
   const signinFormSchema = z.object({
-    vehicleNumber: z.string().min(1, { message: t("Truck Number required.") }),
+    vehicleNumber: z
+      .string()
+      .min(1, { message: t("Vehicle Number required.") }),
     password: z
       .string()
       .min(1, { message: t("Password required.") })
@@ -71,17 +74,20 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
   };
 
   return (
-    <View className="flex flex-1 justify-center gap-4">
-      <Text className="flex justify-center text-lg font-bold text-primary">
-        Truck KING
-      </Text>
-      <View className="flex gap-2">
+    <View className="flex flex-1 justify-center gap-16">
+      <View className="flex items-center">
+        <TruckkingLogo width={250} height={150} fill="hsl(var(--primary))" />
+        <Text className="flex justify-center text-3xl font-bold text-primary">
+          Truck KING
+        </Text>
+      </View>
+      <View className="flex gap-4">
         <Controller
           control={form.control}
           name="vehicleNumber"
           render={({ field: { onChange, value } }) => (
             <Input
-              placeholder={t("Truck Number")}
+              placeholder={t("Vehicle Number")}
               value={value}
               onChangeText={onChange}
             />
@@ -111,21 +117,15 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
             {form.formState.errors.password.message}
           </Text>
         )}
+
         <Button onPress={form.handleSubmit(onSubmit)}>
           <Text>{t("Sign in")}</Text>
         </Button>
-      </View>
-      <View className="flex gap-2">
-        {/* <Pressable
-          onPress={() =>
-            Toast.show({ text1: "Contact", text2: "014-234-1456" })
-          }
-        >
-          <Text>{t("Forgot password")}</Text>
-        </Pressable> */}
-        <Pressable onPress={() => navigation.navigate("SignUp")}>
-          <Text className="text-link">{t("Sign up")}</Text>
-        </Pressable>
+        <View className="flex items-start">
+          <Button onPress={() => navigation.navigate("SignUp")} variant="link">
+            <Text className="text-link">{t("Sign up")}</Text>
+          </Button>
+        </View>
       </View>
     </View>
   );

@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { PortalHost } from "@rn-primitives/portal";
 import { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -37,6 +38,7 @@ function App() {
             </ThemeProvider>
           </SafeAreaProvider>
         </NavigationContainer>
+        <PortalHost />
         <Toast />
       </TanstackQueryProvider>
     </GestureHandlerRootView>
