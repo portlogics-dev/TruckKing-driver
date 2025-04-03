@@ -8,14 +8,14 @@ interface AuthState {
   isSignedIn: boolean;
   isLoading: boolean;
   setIsSignedIn: (value: boolean) => void;
-  checkAuth: () => Promise<void>;
+  checkAuth: () => boolean;
 }
 
 const useAuthStore = create<AuthState>((set) => ({
   isLoading: true,
   isSignedIn: false,
   setIsSignedIn: (value: boolean) => set({ isSignedIn: value }),
-  checkAuth: async () => {
+  checkAuth: () => {
     try {
       const accessToken = CookieStorage.get(accessTokenName);
       const refreshToken = CookieStorage.get(refreshTokenName);
@@ -23,12 +23,18 @@ const useAuthStore = create<AuthState>((set) => ({
       if (accessToken && refreshToken) {
         // 유무 외에 유효성 검사 보강 필요
         set({ isSignedIn: true, isLoading: false });
+        console.log("토큰 확인", { accessToken, refreshToken });
       } else {
         set({ isSignedIn: false, isLoading: false });
+        console.log("토큰 유실", { accessToken, refreshToken });
       }
+      return true;
     } catch (error) {
-      console.error("Auth check failed:", error);
       set({ isSignedIn: false, isLoading: false });
+      console.error("토큰 체크 실패:", error);
+      console.error("쿠키 초기화");
+      CookieStorage.clearAll();
+      return false;
     }
   },
 }));

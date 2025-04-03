@@ -1,33 +1,29 @@
-import { View, StatusBar, ScrollView } from "react-native";
-import { Colors, Header } from "react-native/Libraries/NewAppScreen";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "react-native";
 
-import { useColorScheme } from "../../hooks/useColorScheme";
+import { useSignout } from "@/api";
+import { Button } from "@/components/ui/button";
+import { Text } from "@/components/ui/text";
+import { accessTokenName, refreshTokenName } from "@/constants/tokens";
+import { useAuthStore } from "@/store";
+import { CookieStorage } from "@/store/storage";
 
 export default function Settings() {
-  const { isDarkColorScheme } = useColorScheme();
+  const setIsSignedIn = useAuthStore((state) => state.setIsSignedIn);
+  const logoutMutation = useSignout();
 
-  const backgroundStyle = {
-    backgroundColor: isDarkColorScheme ? Colors.darker : Colors.lighter,
+  const logout = async () => {
+    await logoutMutation.mutateAsync();
+    CookieStorage.delete(accessTokenName);
+    CookieStorage.delete(refreshTokenName);
+    CookieStorage.cleanExpired();
+    setIsSignedIn(false);
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkColorScheme ? "light-content" : "dark-content"}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}
-      >
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkColorScheme ? Colors.black : Colors.white,
-          }}
-        />
-      </ScrollView>
-    </SafeAreaView>
+    <View>
+      <Button onPress={logout}>
+        <Text>Logout</Text>
+      </Button>
+    </View>
   );
 }

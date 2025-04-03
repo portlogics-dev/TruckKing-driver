@@ -4,9 +4,9 @@ import { Animated } from "react-native";
 
 import { useI18n } from "@/i18n";
 import { HouseIcon, TruckIcon, UserIcon } from "@/lib/icons";
-import { HomeStack } from "@/screens/HomeStack/Home";
 import OrderHistory from "@/screens/HomeStack/OrderHistory";
 import Settings from "@/screens/HomeStack/Settings";
+import { HomeStack } from "@/stacks/Home";
 import { MainStackParamList } from "@/type";
 
 const BottomTab = createBottomTabNavigator<MainStackParamList, "MainStack">();
@@ -53,6 +53,7 @@ const MainStack = () => {
         options={{
           tabBarIcon: renderIcon(HouseIcon),
           tabBarLabel: t("Home"),
+          headerShown: false,
         }}
       />
       <BottomTab.Screen
@@ -61,6 +62,7 @@ const MainStack = () => {
         options={{
           tabBarIcon: renderIcon(TruckIcon),
           tabBarLabel: t("Order History"),
+          headerShown: false,
         }}
       />
       <BottomTab.Screen
@@ -69,6 +71,7 @@ const MainStack = () => {
         options={{
           tabBarIcon: renderIcon(UserIcon),
           tabBarLabel: t("Settings"),
+          headerShown: false,
         }}
       />
     </BottomTab.Navigator>
