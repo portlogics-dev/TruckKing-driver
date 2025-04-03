@@ -19,17 +19,19 @@ function App() {
   const { isLoading, checkAuth } = useAuthStore();
 
   useEffect(() => {
+    // 토큰 체크를 너무 중구난방으로 여기저기서 수행하니까 머리가 터질 것 같음
+
     // 앱 시작 시 MMKV 스토리지 초기화
     const initializeStorage = async () => {
       try {
         // MMKV 스토리지의 모든 키 확인
         const keys = storage.getAllKeys();
-        console.log("MMKV Storage Keys:", keys);
+        console.log("앱 초기 스토리지 상태:", keys);
 
         // 인증 상태 확인
         await checkAuth();
       } catch (error) {
-        console.error("Storage initialization failed:", error);
+        console.error("스토리지 검사 실패:", error);
         // 초기화 실패 시 스토리지 초기화
         storage.clearAll();
         await checkAuth();

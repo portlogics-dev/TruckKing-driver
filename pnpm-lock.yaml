@@ -240,9 +240,6 @@ importers:
       prettier:
         specifier: 3.5.3
         version: 3.5.3
-      react-native-splash-screen:
-        specifier: ^3.3.0
-        version: 3.3.0(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0))
       react-native-svg-transformer:
         specifier: ^1.5.0
         version: 1.5.0(react-native-svg@15.11.2(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0))(react@19.0.0))(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0))(typescript@5.8.2)
@@ -4791,11 +4788,6 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
-
-  react-native-splash-screen@3.3.0:
-    resolution: {integrity: sha512-rGjt6HkoSXxMqH4SQUJ1gnPQlPJV8+J47+4yhgTIan4bVvAwJhEeJH7wWt9hXSdH4+VfwTS0GTaflj1Tw83IhA==}
-    peerDependencies:
-      react-native: '>=0.57.0'
 
   react-native-static-safe-area-insets@2.2.0:
     resolution: {integrity: sha512-TLTW2e2kRK3COSK8gMZzwp4wHguFCtcO18itDLn5av/xQblXt9ylu84o+qD9aKJCBfvtNzGOvqqTKqC5GJRZ/g==}
@@ -11192,10 +11184,6 @@ snapshots:
       react-freeze: 1.0.4(react@19.0.0)
       react-native: 0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0)
       warn-once: 0.1.1
-
-  react-native-splash-screen@3.3.0(react-native@0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0)):
-    dependencies:
-      react-native: 0.78.1(@babel/core@7.26.10)(@babel/preset-env@7.26.9(@babel/core@7.26.10))(@react-native-community/cli@15.0.1(typescript@5.8.2))(@types/react@19.0.12)(react@19.0.0)
 
   react-native-static-safe-area-insets@2.2.0: {}
 

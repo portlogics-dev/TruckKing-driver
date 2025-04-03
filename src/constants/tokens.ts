@@ -1,2 +1,2 @@
-export const accessTokenName = "Authentication";
-export const refreshTokenName = "Refresh-Token";
+export const accessTokenName = "Authorization";
+export const refreshTokenName = "Refresh-token";

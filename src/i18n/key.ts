@@ -7,6 +7,7 @@ export const key = {
   Grant: "Grant",
   Home: "Home",
   Loading: "Loading",
+  "Loading Camera...": "Loading Camera...",
   Name: "Name",
   "Name required.": "Name required.",
   "No data": "No data",

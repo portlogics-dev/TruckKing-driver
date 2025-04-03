@@ -24,7 +24,6 @@ const api = ky.create({
       async (request) => {
         const cookieString = CookieStorage.toString();
         if (cookieString) request.headers.set("Cookie", cookieString);
-        console.log(request.headers);
       },
     ],
     afterResponse: [

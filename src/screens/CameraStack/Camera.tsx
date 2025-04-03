@@ -21,8 +21,10 @@ import {
   useLocationPermission,
 } from "react-native-vision-camera";
 
+import { StatusBarBlurBackground } from "@/components/StatusBarBlurBackground";
 import { MAX_ZOOM_FACTOR, SAFE_AREA_PADDING } from "@/constants/camera";
 import { useIsForeground } from "@/hooks/useIsForeground";
+import { useI18n } from "@/i18n";
 import { ZapIcon, ZapOffIcon, MoonIcon, SunMoonIcon } from "@/lib/icons";
 import { CameraStackScreenProps } from "@/type";
 
@@ -32,6 +34,8 @@ Animated.addWhitelistedNativeProps({
 });
 
 export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
+  const { t } = useI18n();
+
   const camera = useRef<Camera>(null);
   const device = useCameraDevice("back");
   const [isCameraInitialized, setIsCameraInitialized] = useState(false);
@@ -181,7 +185,7 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
       ) : (
         <View className="grow justify-center items-center">
           <Text className="font-bold text-center text-white">
-            Your phone does not have a Camera.
+            {t("Loading Camera...")}
           </Text>
         </View>
       )}
@@ -192,6 +196,8 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
           style={shadowStyle}
         />
       </GestureDetector>
+
+      <StatusBarBlurBackground />
 
       <View style={styles.rightButtonRow}>
         {supportsFlash && (
