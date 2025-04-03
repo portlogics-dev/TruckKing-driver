@@ -1,6 +1,6 @@
 import { View } from "react-native";
 
-import { useSignout } from "@/api";
+import { useSignout } from "@/api/auth";
 import { Button } from "@/components/ui/button";
 import { Text } from "@/components/ui/text";
 import { accessTokenName, refreshTokenName } from "@/constants/tokens";

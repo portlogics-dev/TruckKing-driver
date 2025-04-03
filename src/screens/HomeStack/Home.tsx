@@ -6,7 +6,7 @@ import ErrorBoundary, {
   FallbackComponentProps,
 } from "react-native-error-boundary";
 
-import { useCurrentOrderDetail } from "@/api";
+import { useCurrentOrderDetail } from "@/api/order";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";

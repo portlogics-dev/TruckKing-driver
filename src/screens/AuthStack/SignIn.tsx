@@ -4,7 +4,7 @@ import { View } from "react-native";
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
-import { useSignin } from "@/api";
+import { useSignin } from "@/api/auth";
 import TruckkingLogo from "@/assets/truckking-logo.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

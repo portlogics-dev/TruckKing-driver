@@ -12,7 +12,8 @@ import {
 import Toast from "react-native-toast-message";
 import { z } from "zod";
 
-import { useSignup, useVehicleTypeList } from "@/api";
+import { useSignup } from "@/api/auth";
+import { useVehicleTypeList } from "@/api/driver";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
