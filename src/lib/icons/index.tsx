@@ -10,6 +10,13 @@ import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  ZapIcon,
+  ZapOffIcon,
+  MoonIcon,
+  SunMoonIcon,
+  CircleXIcon,
+  DownloadIcon,
+  CircleCheckIcon,
 } from "lucide-react-native";
 
 import { iconWithClassName } from "./iconWithClassName";
@@ -25,6 +32,13 @@ iconWithClassName(RotateCcwIcon);
 iconWithClassName(CheckIcon);
 iconWithClassName(ChevronDownIcon);
 iconWithClassName(ChevronUpIcon);
+iconWithClassName(ZapIcon);
+iconWithClassName(ZapOffIcon);
+iconWithClassName(MoonIcon);
+iconWithClassName(SunMoonIcon);
+iconWithClassName(CircleXIcon);
+iconWithClassName(DownloadIcon);
+iconWithClassName(CircleCheckIcon);
 
 export {
   GhostIcon,
@@ -38,4 +52,11 @@ export {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
+  ZapIcon,
+  ZapOffIcon,
+  MoonIcon,
+  SunMoonIcon,
+  CircleXIcon,
+  DownloadIcon,
+  CircleCheckIcon,
 };

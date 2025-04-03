@@ -38,10 +38,12 @@ const SignUp = () => {
           "Vehicle number must be 4-10 characters long and contain only uppercase letters and numbers"
         ),
       }),
-    vehicleType: z.object({
-      value: z.string(),
-      label: z.string(),
-    }),
+    vehicleType: z
+      .object({
+        value: z.string(),
+        label: z.string(),
+      })
+      .nullable(),
     password: z
       .string()
       // .min(1, { message: t("Password required.") })
@@ -83,7 +85,7 @@ const SignUp = () => {
       name: values.name,
       phoneNumber: values.phoneNumber,
       vehicleNumber: values.vehicleNumber,
-      vehicleType: values.vehicleType.value,
+      vehicleType: values.vehicleType?.value ?? null,
       pincode: values.password,
     });
 
@@ -106,7 +108,7 @@ const SignUp = () => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      className="grow"
+      className="grow px-6"
     >
       <ScrollView
         ref={scrollViewRef}
@@ -300,7 +302,9 @@ const SignUp = () => {
           <View className="grow justify-center">
             <Button
               onPress={form.handleSubmit(onSubmit)}
-              disabled={!form.formState.isValid || !form.formState.isDirty}
+              disabled={
+                !form.getValues("name") || !form.getValues("vehicleNumber")
+              }
               className="disabled:bg-muted-foreground disabled:text-muted-foreground"
             >
               <Text>{t("Sign up")}</Text>

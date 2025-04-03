@@ -9,21 +9,13 @@ import utc from "dayjs/plugin/utc";
 import ky from "ky";
 
 import { accessTokenName, refreshTokenName } from "@/constants/tokens";
-import { CookieStorage } from "@/lib/utils/storage";
 import { useAuthStore } from "@/store";
+import { CookieStorage } from "@/store/storage";
 import { isOrderStatus, OrderStatus } from "@/type";
 
 extend(utc);
 
 const localizedDayjs = (utcString: string) => dayjs(utcString).local();
-
-type ErrorResponse = {
-  timestamp: string;
-  status: number;
-  error: string;
-  message: string;
-  path: string;
-};
 
 const api = ky.create({
   prefixUrl: "https://driver-api.truck-king.co", // todo: get env base URL
@@ -32,6 +24,7 @@ const api = ky.create({
       async (request) => {
         const cookieString = CookieStorage.toString();
         if (cookieString) request.headers.set("Cookie", cookieString);
+        console.log(request.headers);
       },
     ],
     afterResponse: [
@@ -41,15 +34,14 @@ const api = ky.create({
           const combinedCookiesHeader = response.headers.get("set-cookie");
           if (combinedCookiesHeader)
             CookieStorage.parseAndSet(combinedCookiesHeader);
+          console.log("current cookies", CookieStorage.getAll());
+
           return;
         }
-        const errorData: ErrorResponse = await response.json();
-        console.error(errorData);
 
         switch (response.status) {
           case 401:
             CookieStorage.clearAll();
-            // todo: 로그인 스크린으로 리다이렉트 - useNavigator 필요
             throw new Error("Unauthorized access. Please login again.");
           case 403:
             throw new Error("Forbidden");
@@ -58,9 +50,9 @@ const api = ky.create({
           case 500:
             throw new Error("Internal Server Error");
           default:
+            console.error("Unhandled error response:", response);
             break;
         }
-        throw new Error(errorData.message || "Unknown error");
       },
     ],
   },
@@ -107,7 +99,7 @@ export const useSignup = () =>
       phoneNumber: string | null;
       vehicleNumber: string;
       vehicleType: string | null;
-      pincode: string | null; // 확인필요
+      pincode: string | null;
     }) => await api.post("driver", { json: params }),
   });
 

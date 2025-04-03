@@ -4,7 +4,7 @@ import { Animated } from "react-native";
 
 import { useI18n } from "@/i18n";
 import { HouseIcon, TruckIcon, UserIcon } from "@/lib/icons";
-import { HomeFetcher } from "@/screens/HomeStack/Home";
+import { HomeStack } from "@/screens/HomeStack/Home";
 import OrderHistory from "@/screens/HomeStack/OrderHistory";
 import Settings from "@/screens/HomeStack/Settings";
 import { MainStackParamList } from "@/type";
@@ -40,7 +40,7 @@ const MainStack = () => {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="Home"
+      initialRouteName="HomeStack"
       id="MainStack"
       screenOptions={{
         tabBarActiveTintColor: "black",
@@ -48,8 +48,8 @@ const MainStack = () => {
       }}
     >
       <BottomTab.Screen
-        name="Home"
-        component={HomeFetcher}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           tabBarIcon: renderIcon(HouseIcon),
           tabBarLabel: t("Home"),

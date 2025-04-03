@@ -10,19 +10,19 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Text } from "@/components/ui/text";
 import { useI18n } from "@/i18n";
-import { useAuthStore } from "@/store";
+import { useAuthStore, usePermanentStorage } from "@/store";
 import { AuthStackScreenProps } from "@/type";
 
 const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
   const { t } = useI18n();
 
+  const { setIsSignedIn } = useAuthStore();
   const {
     remember,
     setRemember,
     rememberVehicleNumber,
     setRememberVehicleNumber,
-    setIsSignedIn,
-  } = useAuthStore();
+  } = usePermanentStorage();
 
   const signinFormSchema = z.object({
     vehicleNumber: z
@@ -57,26 +57,28 @@ const SignIn = ({ navigation }: AuthStackScreenProps<"SignIn">) => {
       setRememberVehicleNumber("");
     }
 
-    const result = await signinMutation.mutateAsync({
-      vehicleNumber: values.vehicleNumber,
-      pincode: values.password,
-    });
-
-    if (result.ok) {
+    try {
+      await signinMutation.mutateAsync({
+        vehicleNumber: values.vehicleNumber,
+        pincode: values.password,
+      });
       setIsSignedIn(true);
-    } else {
+    } catch (e) {
       Toast.show({
         type: "error",
         text1: t("Sign in failed"),
-        text2: t("Please check your truck number and password again."),
+        text2:
+          e instanceof Error
+            ? e.message
+            : t("Please check your truck number and password again."),
       });
     }
   };
 
   return (
-    <View className="flex flex-1 justify-center gap-16">
+    <View className="flex flex-1 justify-center gap-16 px-6">
       <View className="flex items-center">
-        <TruckkingLogo width={250} height={150} fill="hsl(var(--primary))" />
+        <TruckkingLogo width={250} height={150} fill="" />
         <Text className="flex justify-center text-3xl font-bold text-primary">
           Truck KING
         </Text>

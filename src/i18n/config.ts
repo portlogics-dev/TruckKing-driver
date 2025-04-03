@@ -1,4 +1,4 @@
 export type LanguageType = "en" | "id";
-export const fallbackLng: LanguageType = "id";
-export const supportLanguages: LanguageType[] = [fallbackLng, "en"];
+export const fallbackLng: LanguageType = "en";
+export const supportLanguages: LanguageType[] = [fallbackLng, "id"];
 export const i18nCookie = "i18next";

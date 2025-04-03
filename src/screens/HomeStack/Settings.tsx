@@ -1,15 +1,10 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StatusBar, ScrollView, Button } from "react-native";
+import { View, StatusBar, ScrollView } from "react-native";
 import { Colors, Header } from "react-native/Libraries/NewAppScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Section from "../../components/Section";
 import { useColorScheme } from "../../hooks/useColorScheme";
-import { MainStackParamList } from "../../type";
 
-type SettingsProps = NativeStackScreenProps<MainStackParamList, "Settings">;
-
-export default function Settings({ navigation }: SettingsProps) {
+export default function Settings() {
   const { isDarkColorScheme } = useColorScheme();
 
   const backgroundStyle = {
@@ -31,14 +26,7 @@ export default function Settings({ navigation }: SettingsProps) {
           style={{
             backgroundColor: isDarkColorScheme ? Colors.black : Colors.white,
           }}
-        >
-          <Section title="Home Screen">
-            <Button
-              title="Go to Details"
-              onPress={() => navigation.navigate("Settings")}
-            />
-          </Section>
-        </View>
+        />
       </ScrollView>
     </SafeAreaView>
   );

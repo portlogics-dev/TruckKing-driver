@@ -1,3 +1,4 @@
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { Dayjs } from "dayjs";
 import { Suspense, useCallback, useEffect } from "react";
@@ -13,7 +14,8 @@ import { Text } from "@/components/ui/text";
 import { useI18n } from "@/i18n";
 import { CameraIcon, GhostIcon, PhoneIcon, RotateCcwIcon } from "@/lib/icons";
 import { cn } from "@/lib/utils/cn";
-import { MainStackScreenProps, OrderStatus } from "@/type";
+import CameraStack from "@/stacks/Camera";
+import { HomeStackParamList, HomeStackScreenProps, OrderStatus } from "@/type";
 
 type OrderDetail = {
   id: number;
@@ -96,29 +98,20 @@ function HomeLoading() {
     </View>
   );
 }
-export function HomeFetcher(props: MainStackScreenProps<"Home">) {
-  // todo: mock data
-  // todo 2: data flow structure(tanstack query -> header, body)
-  // todo 3: draw ui
-  // todo 4: camera feature
-  const { data } = useCurrentOrderDetail();
 
-  const fallbackComponent = useCallback(
-    (fallbackProps: FallbackComponentProps) => (
-      <HomeFallback {...fallbackProps} />
-    ),
-    []
-  );
+const Stack = createNativeStackNavigator<HomeStackParamList>();
+
+export function HomeStack() {
   return (
-    <Suspense fallback={<HomeLoading />}>
-      <QueryErrorResetBoundary>
-        {({ reset }) => (
-          <ErrorBoundary onError={reset} FallbackComponent={fallbackComponent}>
-            <Home {...props} data={data} />
-          </ErrorBoundary>
-        )}
-      </QueryErrorResetBoundary>
-    </Suspense>
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} />
+
+      <Stack.Screen
+        name="CameraStack"
+        component={CameraStack}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
   );
 }
 
@@ -160,12 +153,17 @@ function OrderStep(step: OrderDetail["transitSteps"][number]) {
   );
 }
 
-function Home({
-  navigation,
-  data,
-}: MainStackScreenProps<"Home"> & { data: OrderDetail }) {
+function Home({ navigation }: HomeStackScreenProps<"Home">) {
   const { t } = useI18n();
-  // header, scrollview, 5 status
+
+  const { data } = useCurrentOrderDetail();
+
+  const fallbackComponent = useCallback(
+    (fallbackProps: FallbackComponentProps) => (
+      <HomeFallback {...fallbackProps} />
+    ),
+    []
+  );
 
   const headerTitle = useCallback(
     () => <OrderDetailHeader orderId={data.id} status={data.status} />,
@@ -178,67 +176,77 @@ function Home({
   }, [navigation, headerTitle]);
 
   return (
-    <View className="flex flex-1 bg-background dark:bg-background-dark">
-      <ScrollView className="flex flex-1 gap-8">
-        <View className="flex flex-1 gap-4">
-          {data.transitSteps.map((step) => (
-            <OrderStep {...step} />
-          ))}
-        </View>
-        <View className="flex flex-1 gap-4">
-          <Text className="text-xl font-bold">{t("Loading")}</Text>
-          <View className="rounded bg-card dark:bg-card-dark">
-            <View className="flex flex-1 justify-between">
-              <Text className="font-semibold">{t("Point")}</Text>
-              <View>
-                <Text>{data.loading.address}</Text>
-                <Text className="text-sm text-muted-foreground">
-                  {data.loading.addressDetail}
-                </Text>
-              </View>
+    <Suspense fallback={<HomeLoading />}>
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <ErrorBoundary onError={reset} FallbackComponent={fallbackComponent}>
+            <View className="flex flex-1 bg-background dark:bg-background-dark">
+              <ScrollView className="flex flex-1 gap-8">
+                <View className="flex flex-1 gap-4">
+                  {data.transitSteps.map((step) => (
+                    <OrderStep {...step} />
+                  ))}
+                </View>
+                <View className="flex flex-1 gap-4">
+                  <Text className="text-xl font-bold">{t("Loading")}</Text>
+                  <View className="rounded bg-card dark:bg-card-dark">
+                    <View className="flex flex-1 justify-between">
+                      <Text className="font-semibold">{t("Point")}</Text>
+                      <View>
+                        <Text>{data.loading.address}</Text>
+                        <Text className="text-sm text-muted-foreground">
+                          {data.loading.addressDetail}
+                        </Text>
+                      </View>
+                    </View>
+                    <View className="flex flex-1 justify-between">
+                      <Text className="font-semibold">{t("ETA")}</Text>
+                      <Text>
+                        {data.loading.expectTime.format("YYYY-MM-DD HH:mm")}
+                      </Text>
+                    </View>
+                  </View>
+                  <Text className="text-xl font-bold">{t("Unloading")}</Text>
+                  <View className="rounded bg-card dark:bg-card-dark">
+                    <View className="flex flex-1 justify-between">
+                      <Text className="font-semibold">{t("Point")}</Text>
+                      <View>
+                        <Text>{data.unloading.address}</Text>
+                        <Text className="text-sm text-muted-foreground">
+                          {data.unloading.addressDetail}
+                        </Text>
+                      </View>
+                    </View>
+                    <View className="flex flex-1 justify-between">
+                      <Text className="font-semibold">{t("ETA")}</Text>
+                      <Text>
+                        {data.unloading.expectTime.format("YYYY-MM-DD HH:mm")}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+                <View className="flex flex-1 gap-4">
+                  <Text className="text-xl font-bold">{t("Details")}</Text>
+                  <View className="rounded bg-card dark:bg-card-dark">
+                    <View className="flex flex-1 justify-between">
+                      <Text className="font-semibold">{t("Weight")}</Text>
+                      <Text>
+                        {data.weight.value} {data.weight.unit}
+                      </Text>
+                    </View>
+                    <View className="flex flex-1 justify-between">
+                      <Text className="font-semibold">{t("Price")}</Text>
+                      <Text>
+                        {data.price.value} {data.price.currency}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </ScrollView>
             </View>
-            <View className="flex flex-1 justify-between">
-              <Text className="font-semibold">{t("ETA")}</Text>
-              <Text>{data.loading.expectTime.format("YYYY-MM-DD HH:mm")}</Text>
-            </View>
-          </View>
-          <Text className="text-xl font-bold">{t("Unloading")}</Text>
-          <View className="rounded bg-card dark:bg-card-dark">
-            <View className="flex flex-1 justify-between">
-              <Text className="font-semibold">{t("Point")}</Text>
-              <View>
-                <Text>{data.unloading.address}</Text>
-                <Text className="text-sm text-muted-foreground">
-                  {data.unloading.addressDetail}
-                </Text>
-              </View>
-            </View>
-            <View className="flex flex-1 justify-between">
-              <Text className="font-semibold">{t("ETA")}</Text>
-              <Text>
-                {data.unloading.expectTime.format("YYYY-MM-DD HH:mm")}
-              </Text>
-            </View>
-          </View>
-        </View>
-        <View className="flex flex-1 gap-4">
-          <Text className="text-xl font-bold">{t("Details")}</Text>
-          <View className="rounded bg-card dark:bg-card-dark">
-            <View className="flex flex-1 justify-between">
-              <Text className="font-semibold">{t("Weight")}</Text>
-              <Text>
-                {data.weight.value} {data.weight.unit}
-              </Text>
-            </View>
-            <View className="flex flex-1 justify-between">
-              <Text className="font-semibold">{t("Price")}</Text>
-              <Text>
-                {data.price.value} {data.price.currency}
-              </Text>
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </View>
+          </ErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
+    </Suspense>
   );
 }

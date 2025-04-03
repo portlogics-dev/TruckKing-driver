@@ -4,6 +4,7 @@ export const key = {
   Contact: "Contact",
   Details: "Details",
   ETA: "ETA",
+  Grant: "Grant",
   Home: "Home",
   Loading: "Loading",
   Name: "Name",
@@ -20,6 +21,9 @@ export const key = {
   "Please sign in.": "Please sign in.",
   Point: "Point",
   Price: "Price",
+  Report: "Report",
+  "Report feature needs Camera permission.":
+    "Report feature needs Camera permission.",
   Retry: "Retry",
   Settings: "Settings",
   "Sign in": "Sign in",
