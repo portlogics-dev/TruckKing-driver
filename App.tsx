@@ -1,17 +1,19 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { PortalHost } from "@rn-primitives/portal";
 import { useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 
+import TruckkingLogo from "@/assets/truckking-logo.svg";
 import TanstackQueryProvider from "@/providers/TanstackQueryProvider";
-import ThemeProvider from "@/providers/ThemeProvider";
 import RootStack from "@/stacks/Root";
 import { useAuthStore } from "@/store";
 
 import "./global.css";
+
+import "./ReactotronConfig";
 
 function App() {
   const { isLoading, checkAuth } = useAuthStore();
@@ -21,9 +23,10 @@ function App() {
   }, [checkAuth]);
 
   if (isLoading) {
+    console.log("로딩 중...");
     return (
       <View className="flex-1 justify-center items-center bg-background">
-        <ActivityIndicator size="large" color="#0000ff" />
+        <TruckkingLogo width={250} height={150} fill="" />
       </View>
     );
   }
@@ -33,9 +36,7 @@ function App() {
       <TanstackQueryProvider>
         <NavigationContainer>
           <SafeAreaProvider>
-            <ThemeProvider>
-              <RootStack />
-            </ThemeProvider>
+            <RootStack />
           </SafeAreaProvider>
         </NavigationContainer>
         <PortalHost />
