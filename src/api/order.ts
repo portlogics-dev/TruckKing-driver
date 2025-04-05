@@ -286,7 +286,17 @@ export const useUpdateOrderStep = () => {
         longitude: string | null;
         createdAt: string | null; // UTC
       };
-    }) => await api.post("transit-steps", { json: { orderId, ...body } }),
+    }) => {
+      const formData = new FormData();
+      formData.append("orderId", orderId.toString());
+      formData.append("stepEvent", body.stepEvent);
+      formData.append("stepEventImage", body.stepEventImage);
+      if (body.latitude) formData.append("latitude", body.latitude);
+      if (body.longitude) formData.append("longitude", body.longitude);
+      if (body.createdAt) formData.append("createdAt", body.createdAt);
+
+      return await api.post("transit-steps", { body: formData });
+    },
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: orderKeys.detail(variables.orderId),
@@ -299,7 +309,7 @@ export const useOrderTransitStepEventList = () =>
   useQuery({
     queryKey: orderKeys.transitStepEventList(),
     queryFn: async () =>
-      await api.get("transit-steps/step-event").json<{
+      await api.get("transit-steps/step-events").json<{
         list: Array<{
           name: string;
           value: string;
@@ -308,8 +318,8 @@ export const useOrderTransitStepEventList = () =>
       }>(),
     select: (data) =>
       data.list.map((step) => ({
-        label: step.name,
-        value: step.value,
+        stepEventName: step.value,
+        value: step.name,
         description: step.description,
       })),
   });

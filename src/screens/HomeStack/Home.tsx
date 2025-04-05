@@ -6,15 +6,24 @@ import ErrorBoundary, {
   FallbackComponentProps,
 } from "react-native-error-boundary";
 
-import { useCurrentOrderDetail } from "@/api/order";
+import {
+  useCurrentOrderDetail,
+  useOrderTransitStepEventList,
+} from "@/api/order";
+import {
+  CameraIcon,
+  GhostIcon,
+  ImageIcon,
+  PhoneIcon,
+  RotateCcwIcon,
+} from "@/assets/icon";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
 import { useI18n } from "@/i18n";
-import { CameraIcon, GhostIcon, PhoneIcon, RotateCcwIcon } from "@/lib/icons";
 import { cn } from "@/lib/utils/cn";
-import { HomeStackScreenProps, OrderStatus } from "@/type";
+import { HomeStackScreenProps, OrderStatus, OrderStepEvent } from "@/type";
 
 type OrderDetail = {
   id: number;
@@ -143,26 +152,53 @@ export function OrderDetailHeader({
       </Text>
       <View className="flex-row gap-2 items-center">
         <Text className="text-muted-foreground">{status}</Text>
-        {/* <View
-          className={cn(
-            "size-4 rounded-full border border-muted",
-            
-          )}
-        /> */}
       </View>
     </View>
   );
 }
 
-function OrderStep(step: OrderDetail["transitSteps"][number]) {
-  return (
-    <View className="grow rounded justify-between bg-card dark:bg-card-dark ">
-      <Text className="font-bold">{step.stepEventName}</Text>
-      <Button variant="ghost">
-        <CameraIcon />
-      </Button>
-    </View>
+function OrderSteps({
+  orderStepData,
+  navigateToCameraStack,
+}: {
+  orderStepData: OrderDetail["transitSteps"];
+  navigateToCameraStack: (stepEvent: string) => void;
+}) {
+  const { data: stepEventList } = useOrderTransitStepEventList();
+
+  const fallbackStepEventList = Object.entries(OrderStepEvent).map(
+    ([value, label]) => ({
+      stepEventName: label,
+      value,
+    })
   );
+
+  return (stepEventList ?? fallbackStepEventList).map((step, idx) => (
+    <Card key={idx}>
+      <Card.Content>
+        <View className="flex-row justify-between items-center gap-16">
+          <Text className="font-bold">{step.stepEventName}</Text>
+
+          <View className="flex-row gap-4 items-center">
+            {orderStepData.find(
+              (item) => item.stepEventName === step.stepEventName
+            )?.stepEventImageUrl ? (
+              <Button variant="ghost">
+                <ImageIcon className="size-4" />
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                onPress={() => navigateToCameraStack(step.value)}
+              >
+                <CameraIcon className="size-4" />
+              </Button>
+            )}
+          </View>
+        </View>
+      </Card.Content>
+    </Card>
+  ));
 }
 
 export function Home({ navigation }: HomeStackScreenProps<"Home">) {
@@ -187,6 +223,19 @@ export function Home({ navigation }: HomeStackScreenProps<"Home">) {
     });
   }, [navigation, headerTitle]);
 
+  const navigateToCameraStack = useCallback(
+    (stepEvent: string) => {
+      navigation.navigate("CameraStack", {
+        screen: "Camera",
+        params: {
+          orderId: data.id,
+          stepEvent,
+        },
+      });
+    },
+    [navigation, data]
+  );
+
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
@@ -196,9 +245,10 @@ export function Home({ navigation }: HomeStackScreenProps<"Home">) {
               <OrderDetailHeader orderId={data.id} status={data.status} />
               <ScrollView className="grow px-6">
                 <View className="grow gap-4">
-                  {data.transitSteps.map((step) => (
-                    <OrderStep {...step} />
-                  ))}
+                  <OrderSteps
+                    orderStepData={data.transitSteps}
+                    navigateToCameraStack={navigateToCameraStack}
+                  />
                 </View>
                 <View className="grow gap-4">
                   <Text className="text-muted-foreground text-xl font-bold">

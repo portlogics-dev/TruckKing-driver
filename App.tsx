@@ -13,6 +13,8 @@ import { useAuthStore } from "@/store";
 
 import "./global.css";
 
+import "./ReactotronConfig";
+
 function App() {
   const { isLoading, checkAuth } = useAuthStore();
 

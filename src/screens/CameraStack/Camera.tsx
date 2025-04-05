@@ -21,11 +21,12 @@ import {
   useLocationPermission,
 } from "react-native-vision-camera";
 
+import { ZapIcon, ZapOffIcon, MoonIcon, SunMoonIcon } from "@/assets/icon";
 import { StatusBarBlurBackground } from "@/components/StatusBarBlurBackground";
+import { Button } from "@/components/ui/button";
 import { MAX_ZOOM_FACTOR, SAFE_AREA_PADDING } from "@/constants/camera";
 import { useIsForeground } from "@/hooks/useIsForeground";
 import { useI18n } from "@/i18n";
-import { ZapIcon, ZapOffIcon, MoonIcon, SunMoonIcon } from "@/lib/icons";
 import { CameraStackScreenProps } from "@/type";
 
 const ReanimatedCamera = Animated.createAnimatedComponent(Camera);
@@ -43,13 +44,43 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
   const location = useLocationPermission();
 
   useEffect(() => {
-    location.requestPermission();
-  }, [location]);
+    const checkAndRequestPermissions = async () => {
+      try {
+        if (!cameraPermission.hasPermission) {
+          const cameraGranted = await cameraPermission.requestPermission();
+          console.log("Camera permission:", cameraGranted);
+
+          if (!cameraGranted) {
+            navigation.navigate("Permission");
+            return;
+          }
+        }
+
+        if (!location.hasPermission) {
+          const locationGranted = await location.requestPermission();
+          console.log("Location permission:", locationGranted);
+
+          if (!locationGranted) {
+            navigation.navigate("Permission");
+            return;
+          }
+        }
+
+        // 권한이 모두 있는 경우에만 카메라 초기화
+        setIsCameraInitialized(true);
+      } catch (error) {
+        console.error("Permission check failed:", error);
+        navigation.navigate("Permission");
+      }
+    };
+
+    checkAndRequestPermissions();
+  }, [cameraPermission, location, navigation]);
 
   // check if camera page is active
   const isFocussed = useIsFocused();
   const isForeground = useIsForeground();
-  const isActive = isFocussed && isForeground;
+  const isActive = isFocussed && isForeground && isCameraInitialized;
 
   const isPressingButton = useSharedValue(false);
   const setIsPressingButton = useCallback(
@@ -79,14 +110,6 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
       zoom: z,
     };
   }, [maxZoom, minZoom, zoom]);
-
-  if (!cameraPermission.hasPermission) {
-    cameraPermission.requestPermission().then((permissionGranted) => {
-      if (!permissionGranted) {
-        navigation.navigate("Permission");
-      }
-    });
-  }
 
   const focus = useCallback((point: Point) => {
     const c = camera.current;
@@ -121,9 +144,28 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
       const photo = await camera.current.takePhoto({
         flash,
       });
-      navigation.navigate("Preview", { path: photo.path });
+
+      // 메타데이터 추출
+      const metadata = {
+        // latitude: photo.metadata?.[""]?.Latitude,
+        // longitude: photo.metadata?.["{GPS}"]?.Longitude,
+        timestamp: photo.metadata?.["{TIFF}"]?.DateTime,
+      };
+      console.log(photo.metadata?.["{Exif}"]);
+
+      navigation.navigate("Preview", {
+        path: photo.path,
+        orderId: 0,
+        stepEvent: "",
+        metadata,
+      });
     } catch (error) {
       console.error("Failed to take photo:", error);
+    } finally {
+      setTimeout(() => {
+        isPressingButton.value = false;
+        setIsPressingButton(false);
+      }, 500);
     }
   };
 
@@ -142,20 +184,6 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
     [isPressingButton]
   );
 
-  const PressCapture = Gesture.Tap()
-    .enabled(isCameraInitialized && isActive)
-    .shouldCancelWhenOutside(false)
-    .onStart(async () => {
-      try {
-        await takePhoto();
-      } finally {
-        setTimeout(() => {
-          isPressingButton.value = false;
-          setIsPressingButton(false);
-        }, 500);
-      }
-    });
-
   return (
     <View className="grow bg-foreground flex">
       {device ? (
@@ -173,6 +201,8 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
                 text1: "Camera error",
                 text2: error.message,
               });
+              if (error.code.includes("permission"))
+                navigation.navigate("Permission");
             }}
             photo={true}
             photoQualityBalance="balanced"
@@ -190,38 +220,40 @@ export function CameraScreen({ navigation }: CameraStackScreenProps<"Camera">) {
         </View>
       )}
 
-      <GestureDetector gesture={PressCapture}>
-        <Animated.View
-          className="grow absolute self-center bottom-8 rounded-full bg-white size-16"
-          style={shadowStyle}
-        />
-      </GestureDetector>
+      <Button
+        variant="ghost"
+        className="absolute self-center bottom-10"
+        style={shadowStyle}
+        onPress={takePhoto}
+      >
+        <View className="size-20 rounded-full bg-white" />
+      </Button>
 
       <StatusBarBlurBackground />
 
       <View style={styles.rightButtonRow}>
         {supportsFlash && (
           <TouchableOpacity
-            className="justify-center items-center opacity-30 size-5 rounded bg-gray-400"
+            className="justify-center items-center size-12 rounded-full bg-gray-400/30"
             onPress={onFlashPressed}
           >
             {flash ? (
-              <ZapIcon className="size-6 text-white" />
+              <ZapIcon className="size-16 text-white" />
             ) : (
-              <ZapOffIcon className="size-6 text-white" />
+              <ZapOffIcon className="size-16 text-white" />
             )}
           </TouchableOpacity>
         )}
 
         {canToggleNightMode && (
           <TouchableOpacity
-            className="justify-center items-center opacity-30 size-5 rounded bg-gray-400/30"
+            className="justify-center items-center size-12 rounded-full bg-gray-400/30"
             onPress={() => setEnableNightMode(!enableNightMode)}
           >
             {enableNightMode ? (
-              <MoonIcon className="size-6 text-white" />
+              <MoonIcon className="size-16 text-white" />
             ) : (
-              <SunMoonIcon className="size-6 text-white" />
+              <SunMoonIcon className="size-16 text-white" />
             )}
           </TouchableOpacity>
         )}

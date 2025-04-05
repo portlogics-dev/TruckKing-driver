@@ -2,8 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import type { LucideIcon } from "lucide-react-native";
 import { Animated } from "react-native";
 
+import { HouseIcon, TruckIcon, UserIcon } from "@/assets/icon";
 import { useI18n } from "@/i18n";
-import { HouseIcon, TruckIcon, UserIcon } from "@/lib/icons";
 import OrderHistory from "@/screens/HomeStack/OrderHistory";
 import Settings from "@/screens/HomeStack/Settings";
 import { HomeStack } from "@/stacks/Home";

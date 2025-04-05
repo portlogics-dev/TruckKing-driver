@@ -18,7 +18,7 @@ export function HomeStack() {
       <Stack.Screen
         name="CameraStack"
         component={CameraStack}
-        options={{ headerShown: false }}
+        options={{ headerShown: false, presentation: "fullScreenModal" }}
       />
     </Stack.Navigator>
   );

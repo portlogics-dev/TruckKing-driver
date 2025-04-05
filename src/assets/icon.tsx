@@ -17,9 +17,25 @@ import {
   CircleXIcon,
   DownloadIcon,
   CircleCheckIcon,
+  LucideIcon,
+  CircleIcon,
+  ImageIcon,
+  XIcon,
+  SendIcon,
 } from "lucide-react-native";
+import { cssInterop } from "react-native-css-interop";
 
-import { iconWithClassName } from "./iconWithClassName";
+export function iconWithClassName(icon: LucideIcon) {
+  cssInterop(icon, {
+    className: {
+      target: "style",
+      nativeStyleToProp: {
+        color: true,
+        opacity: true,
+      },
+    },
+  });
+}
 
 iconWithClassName(GhostIcon);
 iconWithClassName(KeyRoundIcon);
@@ -39,6 +55,10 @@ iconWithClassName(SunMoonIcon);
 iconWithClassName(CircleXIcon);
 iconWithClassName(DownloadIcon);
 iconWithClassName(CircleCheckIcon);
+iconWithClassName(CircleIcon);
+iconWithClassName(ImageIcon);
+iconWithClassName(XIcon);
+iconWithClassName(SendIcon);
 
 export {
   GhostIcon,
@@ -59,4 +79,8 @@ export {
   CircleXIcon,
   DownloadIcon,
   CircleCheckIcon,
+  CircleIcon,
+  ImageIcon,
+  XIcon,
+  SendIcon,
 };

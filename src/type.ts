@@ -1,9 +1,9 @@
+import { NavigatorScreenParams } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
-  MainStack: undefined;
-  CameraStack: undefined;
-  AuthStack: undefined;
+  MainStack: NavigatorScreenParams<MainStackParamList>;
+  AuthStack: NavigatorScreenParams<AuthStackParamList>;
 };
 
 export type AuthStackParamList = {
@@ -16,7 +16,7 @@ export type AuthStackScreenProps<T extends keyof AuthStackParamList> =
   NativeStackScreenProps<AuthStackParamList, T>;
 
 export type MainStackParamList = {
-  HomeStack: undefined;
+  HomeStack: NavigatorScreenParams<HomeStackParamList>;
   OrderHistory: undefined;
   Settings: undefined;
 };
@@ -26,7 +26,7 @@ export type MainStackScreenProps<T extends keyof MainStackParamList> =
 
 export type HomeStackParamList = {
   Home: undefined;
-  CameraStack: undefined;
+  CameraStack: NavigatorScreenParams<CameraStackParamList>;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
@@ -34,9 +34,19 @@ export type HomeStackScreenProps<T extends keyof HomeStackParamList> =
 
 export type CameraStackParamList = {
   Permission: undefined;
-  Camera: undefined; // orderId? stepId?
+  Camera: {
+    orderId: number;
+    stepEvent: string;
+  };
   Preview: {
     path: string;
+    orderId: number;
+    stepEvent: string;
+    metadata?: {
+      latitude?: number;
+      longitude?: number;
+      timestamp?: string;
+    };
   };
 };
 
@@ -59,4 +69,12 @@ export enum OrderStatus { // 미완
 
 export function isOrderStatus(value: string): value is OrderStatus {
   return Object.values(OrderStatus).includes(value as OrderStatus);
+}
+
+export enum OrderStepEvent {
+  GATE_IN = "Gate in",
+  LOADING = "Loading",
+  GATE_OUT = "Gate out",
+  UNLOADING = "Unloading",
+  DELIVERY_COMPLETED = "Delivery completed",
 }

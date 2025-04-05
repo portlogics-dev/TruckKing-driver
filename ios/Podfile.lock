@@ -47,6 +47,7 @@ PODS:
     - React-RCTText (= 0.78.1)
     - React-RCTVibration (= 0.78.1)
   - React-callinvoker (0.78.1)
+  - React-Codegen (0.1.0)
   - React-Core (0.78.1):
     - glog
     - hermes-engine
@@ -1280,6 +1281,28 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - Yoga
+  - react-native-image-resizer (3.0.11):
+    - DoubleConversion
+    - glog
+    - hermes-engine
+    - RCT-Folly (= 2024.11.18.00)
+    - RCTRequired
+    - RCTTypeSafety
+    - React-Codegen
+    - React-Core
+    - React-debug
+    - React-Fabric
+    - React-featureflags
+    - React-graphics
+    - React-ImageManager
+    - React-NativeModulesApple
+    - React-RCTFabric
+    - React-rendererdebug
+    - React-utils
+    - ReactCodegen
+    - ReactCommon/turbomodule/bridging
+    - ReactCommon/turbomodule/core
+    - Yoga
   - react-native-mmkv (3.2.0):
     - DoubleConversion
     - glog
@@ -1979,6 +2002,7 @@ DEPENDENCIES:
   - React-microtasksnativemodule (from `../node_modules/react-native/ReactCommon/react/nativemodule/microtasks`)
   - "react-native-blur (from `../node_modules/@react-native-community/blur`)"
   - "react-native-cameraroll (from `../node_modules/@react-native-camera-roll/camera-roll`)"
+  - "react-native-image-resizer (from `../node_modules/@bam.tech/react-native-image-resizer`)"
   - react-native-mmkv (from `../node_modules/react-native-mmkv`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -2022,6 +2046,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - React-Codegen
     - SocketRocket
 
 EXTERNAL SOURCES:
@@ -2104,6 +2129,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/blur"
   react-native-cameraroll:
     :path: "../node_modules/@react-native-camera-roll/camera-roll"
+  react-native-image-resizer:
+    :path: "../node_modules/@bam.tech/react-native-image-resizer"
   react-native-mmkv:
     :path: "../node_modules/react-native-mmkv"
   react-native-netinfo:
@@ -2199,6 +2226,7 @@ SPEC CHECKSUMS:
   RCTTypeSafety: 2f0bc11f9584fde4c7e6d8b26577c97681051c00
   React: e6035d3a639f6668a18429aaf2fdc0c12b1e7a81
   React-callinvoker: 3740fb1716428dabd205486c818ce6a5999e7f11
+  React-Codegen: 4b8b4817cea7a54b83851d4c1f91f79aa73de30a
   React-Core: 91dda08e72d07375f41dc7ea00550804e0198282
   React-CoreModules: 5ff502f2c460a74f77ec38164db50886516f403e
   React-cxxreact: a064be4dcb707678007f90d17739f6a677c6c3de
@@ -2225,6 +2253,7 @@ SPEC CHECKSUMS:
   React-microtasksnativemodule: e99c1d7791f5e8d5be370b78e02433e64d2391d8
   react-native-blur: b37343d4df1af48a17444156b674b26d5aec2425
   react-native-cameraroll: cf8479c8b1d3a968e570c55d3d4e340ddbe17904
+  react-native-image-resizer: 28f08fb5fb9b0b2d0bc24f57228ac2eb80b1d0ad
   react-native-mmkv: 55e8a074ae9cb919609755d7271c16b242c2603f
   react-native-netinfo: f0a9899081c185db1de5bb2fdc1c88c202a059ac
   react-native-safe-area-context: 286b3e7b5589795bb85ffc38faf4c0706c48a092

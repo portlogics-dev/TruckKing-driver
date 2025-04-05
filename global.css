@@ -16,8 +16,8 @@
     --secondary-foreground: 222.2 47.4% 11.2%; /* #1E293B */
     --muted: 200 20% 96%; /* #F3F5F6 */
     --muted-foreground: 200 20% 40%; /* #64748B */
-    --accent: 142.1 76.2% 36.3%; /* #16A34A */
-    --accent-foreground: 144.9 80.4% 10%; /* #052E16 */
+    --accent: 210 40% 96.1%; /* #F1F5F9 */
+    --accent-foreground: 222.2 47.4% 11.2%; /* #1E293B */
     --destructive: 0 84.2% 60.2%; /* #EF4444 */
     --destructive-foreground: 210 40% 98%; /* #F8FAFC */
     --border: 214.3 31.8% 91.4%; /* #E2E8F0 */
@@ -45,8 +45,8 @@
     --secondary-foreground: 210 40% 98%; /* #F8FAFC */
     --muted: 200 20% 15%; /* #0F172A */
     --muted-foreground: 200 20% 70%; /* #94A3B8 */
-    --accent: 142.1 76.2% 20%; /* #14532D */
-    --accent-foreground: 144.9 80.4% 90%; /* #DCFCE7 */
+    --accent: 217.2 32.6% 17.5%; /* #1E293B */
+    --accent-foreground: 210 40% 98%; /* #F8FAFC */
     --destructive: 0 62.8% 30.6%; /* #7F1D1D */
     --destructive-foreground: 210 40% 98%; /* #F8FAFC */
     --border: 217.2 32.6% 17.5%; /* #1E293B */
